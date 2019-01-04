@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/northern_california"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Northern California"
+        android:fontFamily="sans-serif"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:background="@drawable/goldengate"
+        android:layout_weight="1"/>
+    <Button
+        android:id="@+id/monterey_bay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Monterey Bay"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        android:background="@drawable/santacruz"
+        android:layout_weight="1"/>
+    <Button
+        android:id="@+id/central_coast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Central Coast"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        android:background="@drawable/morro"
+        android:fontFamily="sans-serif"
+        android:layout_weight="1"/>
+    <Button
+        android:id="@+id/southern_california"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Southern California"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif"
+        android:textSize="26sp"
+        android:background="@drawable/socal"
+        android:layout_weight="1"/>
+
+
+</LinearLayout>
