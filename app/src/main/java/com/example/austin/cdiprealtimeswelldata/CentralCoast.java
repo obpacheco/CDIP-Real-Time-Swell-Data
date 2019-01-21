@@ -20,14 +20,14 @@ public class CentralCoast extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_central_coast);
+        setContentView(R.layout.local_swell_map_layout);
         setTitle("Central Coast");
 
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mProgressBar.setIndeterminate(true);
 
 
-        imageView = (ImageView) findViewById(R.id.image_central_coast);
+        imageView = (ImageView) findViewById(R.id.image_local_swell_map);
 
         String url = "https://cdip.ucsd.edu/recent/model_images/conception.png";
         Picasso.get().load(url).into(imageView);

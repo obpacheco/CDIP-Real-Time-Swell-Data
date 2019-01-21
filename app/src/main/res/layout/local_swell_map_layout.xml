@@ -9,8 +9,8 @@
         layout="@layout/app_bar" />
 
     <RelativeLayout android:id="@android:id/list"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ProgressBar
             android:layout_width="match_parent"
@@ -21,7 +21,7 @@
 
 
         <com.ortiz.touchview.TouchImageView
-            android:id="@+id/image_central_coast"
+            android:id="@+id/image_local_swell_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="2sp"
