@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">CDIP Real Time Swell Data</string>
     <string name="refresh">refresh</string>
+    <string name="northern_california_swell_url">"https://cdip.ucsd.edu/recent/model_images/sf.png"</string>
+    <string name="monterey_swell_url">"https://cdip.ucsd.edu/recent/model_images/monterey.png"</string>
+    <string name="central_coast_swell_url">"https://cdip.ucsd.edu/recent/model_images/conception.png"</string>
+    <string name="southern_california_swell_url">"https://cdip.ucsd.edu/recent/model_images/socal_now.png"</string>
 </resources>

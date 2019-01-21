@@ -1,4 +1,4 @@
-package com.example.austin.cdiprealtimeswelldata;
+package com.example.austin.cdiprealtimeswelldata.activity;
 
 import android.content.Intent;
 import androidx.annotation.RequiresApi;
@@ -7,6 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.austin.cdiprealtimeswelldata.R;
+
 import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
@@ -62,22 +65,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void openNorthernCalifornia(){
-        Intent intent = new Intent(this, NorthernCalifornia.class);
+        Intent intent = new Intent(this, SwellMapActivity.class);
+        intent.putExtra("Location", "Northern California");
         startActivity(intent);
     }
 
     public void openMontereyBay(){
-        Intent intent = new Intent(this, MontereyBay.class);
+        Intent intent = new Intent(this, SwellMapActivity.class);
+        intent.putExtra("Location", "Monterey Bay");
         startActivity(intent);
     }
 
     public void openCentralCoast(){
-        Intent intent = new Intent(this, CentralCoast.class);
+        Intent intent = new Intent(this, SwellMapActivity.class);
+        intent.putExtra("Location", "Central Coast");
         startActivity(intent);
     }
 
     public void openSouthernCalifornia(){
-        Intent intent = new Intent(this, SouthernCalifornia.class);
+        Intent intent = new Intent(this, SwellMapActivity.class);
+        intent.putExtra("Location", "Southern California");
         startActivity(intent);
     }
 

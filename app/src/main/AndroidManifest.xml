@@ -12,17 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NorthernCalifornia" />
-        <activity android:name=".MontereyBay" />
-        <activity android:name=".CentralCoast" />
-        <activity android:name=".SouthernCalifornia" />
+        <activity android:name=".activity.SwellMapActivity" />
+        <activity android:name=".activity.MontereyBay" />
+        <activity android:name=".activity.CentralCoast" />
+        <activity android:name=".activity.SouthernCalifornia" />
     </application>
 
 </manifest>

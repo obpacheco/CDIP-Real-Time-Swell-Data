@@ -1,4 +1,4 @@
-package com.example.austin.cdiprealtimeswelldata;
+package com.example.austin.cdiprealtimeswelldata.activity;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,19 +9,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import com.example.austin.cdiprealtimeswelldata.R;
 import com.squareup.picasso.Picasso;
 import androidx.appcompat.widget.Toolbar;
 
-public class SouthernCalifornia extends AppCompatActivity {
+import static com.example.austin.cdiprealtimeswelldata.utilities.GetSwellMapUtil.getSwellMapUrl;
+
+public class SwellMapActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private ProgressBar mProgressBar;
+    private String mLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.local_swell_map_layout);
-        setTitle("Southern California");
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        mLocation = bundle.getString("Location");
+        setTitle(mLocation);
 
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mProgressBar.setIndeterminate(true);
@@ -29,8 +38,7 @@ public class SouthernCalifornia extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.image_local_swell_map);
 
-        String url = "https://cdip.ucsd.edu/recent/model_images/socal_now.png";
-        Picasso.get().load(url).into(imageView);
+        Picasso.get().load(getSwellMapUrl(mLocation)).into(imageView);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -64,8 +72,7 @@ public class SouthernCalifornia extends AppCompatActivity {
 
     public void refreshPicture()
     {
-        Intent intent = new Intent(this, SouthernCalifornia.class);
+        Intent intent = new Intent(this, SwellMapActivity.class);
         startActivity(intent);
     }
 }
-
