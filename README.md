@@ -1,5 +1,8 @@
 # CDIP-Real-Time-Swell-Data
 Android app for CDIP
 
-This is a simple app for pulling up buoy data from Scripps Instution of Oceanography. I have plans for also putting in tidal and wind data, hopefully in the near future. This was a learning project mainly for myself as my first android project.
+This is a to replace the need to open the browser to find the current swell data from UCSD, as well as pulling up local tidal information.
 
+![Home Screen]((https://raw.github.com/pachecosf/CDIP-Real-Time-Swell-Data/master/screenshots/home_screenshot.png)
+
+![Northern California](https://raw.githubusercontent.com/pachecosf/CDIP-Real-Time-Swell-Data/master/screenshots/northern_screenshot.png)
