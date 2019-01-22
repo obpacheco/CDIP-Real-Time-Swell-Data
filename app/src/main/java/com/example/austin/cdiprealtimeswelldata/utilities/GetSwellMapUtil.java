@@ -1,5 +1,7 @@
 package com.example.austin.cdiprealtimeswelldata.utilities;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.util.TypedValue;
 
 import com.example.austin.cdiprealtimeswelldata.R;
@@ -7,19 +9,19 @@ import com.example.austin.cdiprealtimeswelldata.R;
 public class GetSwellMapUtil {
     private GetSwellMapUtil(){}
 
-    public static int getSwellMapUrl(String location)
+    public static String getSwellMapUrl(Context context, String location)
     {
-        TypedValue typedValue = new TypedValue();
+        String url = "Error location doesn't equal a resource";
         if (location.equals("Northern California"))
-            return R.string.northern_california_swell_url;
+            url = context.getString(R.string.northern_california_swell_url);
         else if (location.equals("Monterey Bay"))
-            return R.string.monterey_swell_url;
+            url = context.getString(R.string.monterey_swell_url);
         else if (location.equals("Central Coast"))
-            return R.string.central_coast_swell_url;
+            url = context.getString(R.string.central_coast_swell_url);
         else if (location.equals("Southern California"))
-            return R.string.southern_california_swell_url;
+            url = context.getString(R.string.southern_california_swell_url);
 
-        return -1;
+        return url;
 
     }
 }

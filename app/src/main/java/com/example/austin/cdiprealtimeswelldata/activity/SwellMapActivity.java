@@ -3,6 +3,7 @@ package com.example.austin.cdiprealtimeswelldata.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -38,7 +39,7 @@ public class SwellMapActivity extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.image_local_swell_map);
 
-        Picasso.get().load(getSwellMapUrl(mLocation)).into(imageView);
+        Picasso.get().load(getSwellMapUrl(this, mLocation)).into(imageView);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
