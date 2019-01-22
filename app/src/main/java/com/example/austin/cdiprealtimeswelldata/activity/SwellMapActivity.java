@@ -73,7 +73,10 @@ public class SwellMapActivity extends AppCompatActivity {
 
     public void refreshPicture()
     {
-        Intent intent = new Intent(this, SwellMapActivity.class);
-        startActivity(intent);
+        mProgressBar.setIndeterminate(true);
+        String url = getSwellMapUrl(this, mLocation);
+        Picasso.get().load(url + "?=" + System.currentTimeMillis()).into(imageView);
+        mProgressBar.setIndeterminate(false);
+
     }
 }
