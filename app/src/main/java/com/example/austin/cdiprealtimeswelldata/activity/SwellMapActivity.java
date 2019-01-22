@@ -75,7 +75,7 @@ public class SwellMapActivity extends AppCompatActivity {
     {
         mProgressBar.setIndeterminate(true);
         String url = getSwellMapUrl(this, mLocation);
-        Picasso.get().load(url + "?=" + System.currentTimeMillis()).into(imageView);
+        Picasso.get().load(url).into(imageView);
         mProgressBar.setIndeterminate(false);
 
     }

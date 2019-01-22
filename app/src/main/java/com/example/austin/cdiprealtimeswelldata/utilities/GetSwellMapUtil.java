@@ -21,7 +21,9 @@ public class GetSwellMapUtil {
         else if (location.equals("Southern California"))
             url = context.getString(R.string.southern_california_swell_url);
 
-        return url;
+        // currentTimeMillis adds the time to the string
+        // forces the url to refresh the imageview every time its called
+        return url + "?=" + System.currentTimeMillis();
 
     }
 }
