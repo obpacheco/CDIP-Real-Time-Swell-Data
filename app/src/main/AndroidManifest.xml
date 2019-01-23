@@ -19,10 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SwellMapActivity" />
-        <activity android:name=".activity.MontereyBay" />
-        <activity android:name=".activity.CentralCoast" />
-        <activity android:name=".activity.SouthernCalifornia" />
+        <activity
+            android:name=".activity.SwellMapActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
     </application>
 
 </manifest>
