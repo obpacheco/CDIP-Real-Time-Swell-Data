@@ -3,7 +3,6 @@ package com.example.austin.cdiprealtimeswelldata.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,8 +11,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.example.austin.cdiprealtimeswelldata.R;
+import com.example.austin.cdiprealtimeswelldata.fragment.LocalSwellMapFragment;
 import com.squareup.picasso.Picasso;
+import com.viewpagerindicator.CirclePageIndicator;
+
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import static com.example.austin.cdiprealtimeswelldata.utilities.GetSwellMapUtil.getSwellMapUrl;
 
@@ -22,6 +28,12 @@ public class SwellMapActivity extends AppCompatActivity {
     private ImageView imageView;
     private ProgressBar mProgressBar;
     private String mLocation;
+    private ViewPager pager;
+    private LocalPagerAdapter pagerAdapter;
+
+    private static final int POS_MAP = 0;
+    private static final int POS_TIDE = 1;
+    private static final int NUM_FRAGMENTS = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +45,17 @@ public class SwellMapActivity extends AppCompatActivity {
         mLocation = bundle.getString("Location");
         setTitle(mLocation);
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        mProgressBar.setIndeterminate(true);
 
+        pager = findViewById(R.id.pager);
+        pagerAdapter = new LocalPagerAdapter(getSupportFragmentManager(), mLocation);
+        pager.setAdapter(pagerAdapter);
+        CirclePageIndicator pageIndicator = findViewById(R.id.page_indicator);
+        pageIndicator.setViewPager(pager);
 
-        imageView = (ImageView) findViewById(R.id.image_local_swell_map);
-
-        Picasso.get().load(getSwellMapUrl(this, mLocation)).into(imageView);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
-        mProgressBar.setIndeterminate(false);
 
     }
 
@@ -78,5 +89,43 @@ public class SwellMapActivity extends AppCompatActivity {
         Picasso.get().load(url).into(imageView);
         mProgressBar.setIndeterminate(false);
 
+    }
+
+    public class LocalPagerAdapter extends FragmentStatePagerAdapter {
+
+        private String mLocation;
+
+
+        public LocalPagerAdapter(FragmentManager fm, String location) {
+            super(fm);
+            mLocation = location;
+        }
+
+        private LocalSwellMapFragment localSwellMapFragment;
+        private LocalSwellMapFragment localSwellMapFragment2;
+
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case POS_MAP:
+                    if(localSwellMapFragment == null) {
+                        localSwellMapFragment = localSwellMapFragment.newInstance(mLocation);
+                    }
+                    return localSwellMapFragment;
+                case POS_TIDE:
+                    if(localSwellMapFragment2 == null) {
+                        localSwellMapFragment2 = localSwellMapFragment2.newInstance(mLocation);
+                    }
+                    return localSwellMapFragment2;
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_FRAGMENTS;
+        }
     }
 }
