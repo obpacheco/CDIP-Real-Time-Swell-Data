@@ -85,11 +85,7 @@ public class SwellMapActivity extends AppCompatActivity {
 
     public void refreshPicture()
     {
-        mProgressBar.setIndeterminate(true);
-        String url = getSwellMapUrl(this, mLocation);
-        Picasso.get().load(url).into(imageView);
-        mProgressBar.setIndeterminate(false);
-
+        pagerAdapter.RefreshPicture();
     }
 
     public class LocalPagerAdapter extends FragmentStatePagerAdapter {
@@ -122,6 +118,11 @@ public class SwellMapActivity extends AppCompatActivity {
                 default:
                     return null;
             }
+        }
+
+        public void RefreshPicture()
+        {
+            localSwellMapFragment.RefreshPicture();
         }
 
         @Override
