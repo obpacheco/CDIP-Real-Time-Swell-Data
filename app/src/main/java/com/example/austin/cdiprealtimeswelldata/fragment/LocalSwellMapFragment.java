@@ -68,4 +68,14 @@ public class LocalSwellMapFragment extends Fragment {
         root = null;
     }
 
+    public void RefreshPicture()
+    {
+        mProgressBar = root.findViewById(R.id.progress_bar);
+        mProgressBar.setIndeterminate(true);
+        String url = getSwellMapUrl(getContext(), location);
+        swellMapImage = root.findViewById(R.id.image_local_swell_map);
+        Picasso.get().load(url).into(swellMapImage);
+        mProgressBar.setIndeterminate(false);
+    }
+
 }
