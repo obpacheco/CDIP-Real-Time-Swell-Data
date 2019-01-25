@@ -7,7 +7,9 @@ import android.util.TypedValue;
 import com.example.austin.cdiprealtimeswelldata.R;
 
 public class GetSwellMapUtil {
-    private GetSwellMapUtil(){}
+    private GetSwellMapUtil(){
+        //empty constructor
+    }
 
     public static String getSwellMapUrl(Context context, String location)
     {

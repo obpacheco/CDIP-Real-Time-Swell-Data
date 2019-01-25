@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 
 import com.example.austin.cdiprealtimeswelldata.R;
 import com.example.austin.cdiprealtimeswelldata.fragment.LocalSwellMapFragment;
+import com.example.austin.cdiprealtimeswelldata.fragment.LocalTideDataFragment;
 import com.squareup.picasso.Picasso;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -102,7 +103,7 @@ public class SwellMapActivity extends AppCompatActivity {
         }
 
         private LocalSwellMapFragment localSwellMapFragment;
-        private LocalSwellMapFragment localSwellMapFragment2;
+        private LocalTideDataFragment localTideFragment;
 
 
         @Override
@@ -114,10 +115,10 @@ public class SwellMapActivity extends AppCompatActivity {
                     }
                     return localSwellMapFragment;
                 case POS_TIDE:
-                    if(localSwellMapFragment2 == null) {
-                        localSwellMapFragment2 = localSwellMapFragment2.newInstance(mLocation);
+                    if(localTideFragment == null) {
+                        localTideFragment = localTideFragment.newInstance(mLocation);
                     }
-                    return localSwellMapFragment2;
+                    return localTideFragment;
                 default:
                     return null;
             }
