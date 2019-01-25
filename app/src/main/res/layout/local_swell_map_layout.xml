@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/black">
+
     <include
         android:id="@+id/app_bar"
         layout="@layout/app_bar" />
 
-    <RelativeLayout android:id="@android:id/list"
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/page_indicator"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_marginTop="-12dp"
+        android:layout_marginBottom="4dp"
+        android:background="@android:color/transparent"
+        app:fillColor="@color/default_circle_indicator_fill_color"
+        app:strokeColor="@color/default_circle_indicator_stroke_color"
+        app:radius="4dp" />
 
-        <ProgressBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_margin="10dp"
-            android:id="@+id/progress_bar"/>
+    <androidx.viewpager.widget.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-
-        <com.ortiz.touchview.TouchImageView
-            android:id="@+id/image_local_swell_map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2sp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
-
-    </RelativeLayout>
 
 </LinearLayout>

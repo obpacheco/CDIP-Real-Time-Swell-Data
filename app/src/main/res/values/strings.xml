@@ -1,8 +1,18 @@
 <resources>
     <string name="app_name">CDIP Real Time Swell Data</string>
     <string name="refresh">refresh</string>
-    <string name="northern_california_swell_url">"https://cdip.ucsd.edu/recent/model_images/sf.png"</string>
-    <string name="monterey_swell_url">"https://cdip.ucsd.edu/recent/model_images/monterey.png"</string>
-    <string name="central_coast_swell_url">"https://cdip.ucsd.edu/recent/model_images/conception.png"</string>
-    <string name="southern_california_swell_url">"https://cdip.ucsd.edu/recent/model_images/socal_now.png"</string>
+
+    <string name="northern_california_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/sf.png"</string>
+    <string name="monterey_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/monterey.png"</string>
+    <string name="central_coast_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/conception.png"</string>
+    <string name="southern_california_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/socal_now.png"</string>
+
+    <string name="northern_california_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?date=today&amp;station=9414290&amp;product=predictions&amp;datum=mllw&amp;units=english&amp;time_zone=gmt&amp;application=web_services&amp;format=json</string>
+    <string name="monterey_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?date=today&amp;station=9413450&amp;product=predictions&amp;datum=mllw&amp;units=english&amp;time_zone=gmt&amp;application=web_services&amp;format=json</string>
+    <string name="central_coast_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?date=today&amp;station=9412110&amp;product=predictions&amp;datum=mllw&amp;units=english&amp;time_zone=gmt&amp;application=web_services&amp;format=json</string>
+    <string name="southern_california_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?date=today&amp;station=9410840&amp;product=predictions&amp;datum=mllw&amp;units=english&amp;time_zone=gmt&amp;application=web_services&amp;format=json</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
