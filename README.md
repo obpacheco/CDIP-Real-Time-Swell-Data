@@ -1,8 +1,6 @@
 # CDIP-Real-Time-Swell-Data
 Android app for CDIP
 
-This is a to replace the need to open the browser to find the current swell data from UCSD, as well as pulling up local tidal information.
+Simple and lightweight app to pull up regional current swell data for California from the Coastal Data Information Program. Includes dominant deep water swells from the northern and southern Pacific Ocean, as well as swell direction and period. Also pulls up current tidal data from NOAA for each region. 
 
-![Home Screen](https://raw.githubusercontent.com/pachecosf/CDIP-Real-Time-Swell-Data/master/screenshots/home_screenshot.png)
-
-![Northern California](https://raw.githubusercontent.com/pachecosf/CDIP-Real-Time-Swell-Data/master/screenshots/northern_screenshot.png)
+![Screen_Shots](https://raw.githubusercontent.com/pachecosf/CDIP-Real-Time-Swell-Data/master/screenshots/SwellTideScreenShots.jpg)
