@@ -2,19 +2,16 @@ package com.example.austin.cdiprealtimeswelldata.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.text.Layout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,21 +19,23 @@ import android.widget.TextView;
 import com.example.austin.cdiprealtimeswelldata.R;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
+
+import java.util.Calendar;
 
 import static android.content.ContentValues.TAG;
-import static com.example.austin.cdiprealtimeswelldata.utilities.GetSwellMapUtil.getSwellMapUrl;
 
 
 public class LocalTideDataFragment extends Fragment {
 
     private View root;
     private String location;
+    private ProgressBar mProgressBar;
+    private final int TIME_START;
+    private final int TIME_END;
 
     public static LocalTideDataFragment newInstance(String location) {
         LocalTideDataFragment localTideDataFragment = new LocalTideDataFragment();
@@ -47,7 +46,8 @@ public class LocalTideDataFragment extends Fragment {
 
 
     public LocalTideDataFragment() {
-        // Required empty public constructor
+        TIME_START = 6;
+        TIME_END = 20;
     }
 
     @Override
@@ -56,6 +56,7 @@ public class LocalTideDataFragment extends Fragment {
         if (location == null) {
             Log.e(TAG, TAG + " was called without location");
         }
+
     }
 
     @Override
@@ -64,8 +65,12 @@ public class LocalTideDataFragment extends Fragment {
         setRetainInstance(true);
         root = inflater.inflate(R.layout.local_tide_data_fragment, container, false);
         final LinearLayout linearLayout1 = root.findViewById(R.id.linearLayout1);
+        mProgressBar = root.findViewById(R.id.progress_bar);
+        mProgressBar.setIndeterminate(true);
+
         GetTideDataUtil getTideDataUtil = new GetTideDataUtil();
         String url = getTideDataUtil.GetTideDataURL(getContext());
+
         Ion.with(getContext())
                 .load(url)
                 .asString()
@@ -75,18 +80,41 @@ public class LocalTideDataFragment extends Fragment {
                         try {
                             JSONObject json = new JSONObject(result);
                             JSONArray predictionsArray = json.getJSONArray("predictions");
-                            for ( int i = 0; i < 240; i+=5 ) {
+
+                            TextView date = new TextView(getContext());
+                            date.setText(getTideDate(predictionsArray.getJSONObject(0)));
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                            params.weight = 1.0f;
+                            date.setTextColor(Color.WHITE);
+                            date.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f);
+                            linearLayout1.addView(date);
+                            TextView blankLine = new TextView(getContext());
+                            linearLayout1.addView(blankLine);
+
+                            Calendar calendar = Calendar.getInstance();
+                            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                            int minute = calendar.get(Calendar.MINUTE);
+                            int timeToHighlight = hour * 10 + 5;
+                            if (minute > 30)
+                                timeToHighlight += 5;
+
+                            int counter = timeToHighlight - 20;
+                            if (counter < 1)
+                                counter = 1;
+                            // This loop grabs all the individual tide data for each half hour
+                            for ( ; counter <= TIME_END * 10; counter+=5 ) {
                                 TextView tide = new TextView(getContext());
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                                params.weight = 1.0f;
                                 tide.setLayoutParams(params);
-                                //tide.setGravity(Gravity.CENTER);
-                                tide.setText(getTideString(predictionsArray.getJSONObject(i)));
+                                tide.setText(getTideString(predictionsArray, counter));
                                 tide.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f);
                                 tide.setTextColor(Color.WHITE);
+                                tide.setGravity(Gravity.CENTER);
+                                if (counter == timeToHighlight)
+                                    tide.setBackgroundColor(getResources().getColor(R.color.highlight_trueblack));
                                 linearLayout1.addView(tide);
                             }
+                            mProgressBar.setVisibility(View.GONE);
                         } catch (JSONException jsone){
                             Log.wtf("failed downloading tidal information", jsone);
                         }
@@ -95,15 +123,37 @@ public class LocalTideDataFragment extends Fragment {
         return root;
     }
 
-    private String getTideString(JSONObject object)
+    private String getTideString(JSONArray array, int index)
     {
         String tide = "";
         try{
-            tide = object.getString("t") + "            " + object.getString("v");
+            JSONObject nowTide = array.getJSONObject(index);
+            JSONObject lastTide = array.getJSONObject(index - 1);
+            Float nowTideFloat = Float.parseFloat(nowTide.getString("v"));
+            Float lastTideFloat = Float.parseFloat(lastTide.getString("v"));
+            tide = nowTide.getString("t") + "            " + nowTide.getString("v") + "       ";
+
+            // this is for whether the tide is rising or falling
+            if (nowTideFloat > lastTideFloat)
+                tide +=  '\u2191';
+            else
+                tide += '\u2193';
         } catch (JSONException jsone){
             Log.wtf("failed downloading tidal information", jsone);
         }
-        return tide.substring(0,11) + "           " + tide.substring(11);
+        return tide.substring(10);
+    }
+
+    private String getTideDate(JSONObject object)
+    {
+        String objectsDate = "";
+        try {
+            objectsDate = object.getString("t");
+        } catch (JSONException jsone){
+            Log.wtf("failed downloading tidal information", jsone);
+        }
+        return "    Date:    " + objectsDate.substring(0,10);
+
     }
 
     @Override
@@ -131,5 +181,6 @@ public class LocalTideDataFragment extends Fragment {
             return url;
         }
     }
+
 
 }
