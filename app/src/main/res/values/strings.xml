@@ -7,12 +7,15 @@
     <string name="central_coast_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/conception.png"</string>
     <string name="southern_california_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/socal_now.png"</string>
 
-    <string name="northern_california_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?date=today&amp;station=9414290&amp;product=predictions&amp;datum=mllw&amp;units=english&amp;time_zone=gmt&amp;application=web_services&amp;format=json</string>
-    <string name="monterey_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?date=today&amp;station=9413450&amp;product=predictions&amp;datum=mllw&amp;units=english&amp;time_zone=gmt&amp;application=web_services&amp;format=json</string>
-    <string name="central_coast_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?date=today&amp;station=9412110&amp;product=predictions&amp;datum=mllw&amp;units=english&amp;time_zone=gmt&amp;application=web_services&amp;format=json</string>
-    <string name="southern_california_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?date=today&amp;station=9410840&amp;product=predictions&amp;datum=mllw&amp;units=english&amp;time_zone=gmt&amp;application=web_services&amp;format=json</string>
+    <string name="northern_california_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&amp;range=24&amp;datum=MLLW&amp;station=9414290&amp;time_zone=lst_ldt&amp;units=english&amp;interval=hilo&amp;format=json</string>
+    <string name="monterey_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&amp;range=24&amp;datum=MLLW&amp;station=9413450&amp;time_zone=lst_ldt&amp;units=english&amp;interval=hilo&amp;format=json</string>
+    <string name="central_coast_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&amp;range=24&amp;datum=MLLW&amp;station=9412110&amp;time_zone=lst_ldt&amp;units=english&amp;interval=hilo&amp;format=json</string>
+    <string name="southern_california_tide_url" translatable="false"> https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&amp;range=24&amp;datum=MLLW&amp;station=9410840&amp;time_zone=lst_ldt&amp;units=english&amp;interval=hilo&amp;format=json</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="northern_california_now_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&amp;range=1&amp;datum=MLLW&amp;station=9414290&amp;time_zone=lst_ldt&amp;units=english&amp;format=json</string>
+    <string name="monterey_tide_now_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&amp;range=1&amp;datum=MLLW&amp;station=9413450&amp;time_zone=lst_ldt&amp;units=english&amp;format=json</string>
+    <string name="central_coast_now_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&amp;range=1&amp;datum=MLLW&amp;station=9412110&amp;time_zone=lst_ldt&amp;units=english&amp;format=json</string>
+    <string name="southern_california_now_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&amp;range=1&amp;datum=MLLW&amp;station=9410840&amp;time_zone=lst_ldt&amp;units=english&amp;format=json</string>
+
 
 </resources>

@@ -85,7 +85,8 @@ public class SwellMapActivity extends AppCompatActivity {
 
     public void refreshPicture()
     {
-        pagerAdapter.RefreshPicture();
+        pagerAdapter = pagerAdapter = new LocalPagerAdapter(getSupportFragmentManager(), mLocation);
+        pager.setAdapter(pagerAdapter);
     }
 
     public class LocalPagerAdapter extends FragmentStatePagerAdapter {
@@ -120,10 +121,6 @@ public class SwellMapActivity extends AppCompatActivity {
             }
         }
 
-        public void RefreshPicture()
-        {
-            localSwellMapFragment.RefreshPicture();
-        }
 
         @Override
         public int getCount() {
