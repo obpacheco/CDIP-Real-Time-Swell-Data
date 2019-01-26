@@ -87,31 +87,40 @@ public class LocalTideDataFragment extends Fragment {
                                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                             params.weight = 1.0f;
                             date.setTextColor(Color.WHITE);
-                            date.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f);
+                            date.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
                             linearLayout1.addView(date);
                             TextView blankLine = new TextView(getContext());
                             linearLayout1.addView(blankLine);
+                            TextView units = new TextView(getContext());
+                            String unitString = "    "
+                                    + "TIME"
+                                    + "        "
+                                    + "FT"
+                                    + "            "
+                                    + "H/L";
+                            units.setText(unitString);
+                            units.setTextColor(Color.WHITE);
+                            units.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
+                            linearLayout1.addView(units);
 
                             Calendar calendar = Calendar.getInstance();
                             int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                            int minute = calendar.get(Calendar.MINUTE);
-                            int timeToHighlight = hour * 10 + 5;
-                            if (minute > 30)
-                                timeToHighlight += 5;
+                            boolean highlight = true;
+                            int previousTidesHour = 0;
 
-                            int counter = timeToHighlight - 20;
-                            if (counter < 1)
-                                counter = 1;
-                            // This loop grabs all the individual tide data for each half hour
-                            for ( ; counter <= TIME_END * 10; counter+=5 ) {
+                            for (int i = 0; i < predictionsArray.length(); i++ ) {
                                 TextView tide = new TextView(getContext());
                                 tide.setLayoutParams(params);
-                                tide.setText(getTideString(predictionsArray, counter));
-                                tide.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f);
+                                String tideText = getTideString(predictionsArray, i);
+                                tide.setText(tideText);
+                                tide.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
                                 tide.setTextColor(Color.WHITE);
-                                tide.setGravity(Gravity.CENTER);
-                                if (counter == timeToHighlight)
+                                int tidesHour = Integer.parseInt(tideText.substring(4,6));
+                                if (highlight && hour <= tidesHour || highlight && previousTidesHour > tidesHour){
                                     tide.setBackgroundColor(getResources().getColor(R.color.highlight_trueblack));
+                                    highlight = false;
+                                }
+                                previousTidesHour = tidesHour;
                                 linearLayout1.addView(tide);
                             }
                             mProgressBar.setVisibility(View.GONE);
@@ -128,20 +137,17 @@ public class LocalTideDataFragment extends Fragment {
         String tide = "";
         try{
             JSONObject nowTide = array.getJSONObject(index);
-            JSONObject lastTide = array.getJSONObject(index - 1);
-            Float nowTideFloat = Float.parseFloat(nowTide.getString("v"));
-            Float lastTideFloat = Float.parseFloat(lastTide.getString("v"));
-            tide = nowTide.getString("t") + "            " + nowTide.getString("v") + "       ";
+            tide = nowTide.getString("t")
+                    + "       "
+                    + nowTide.getString("v")
+                    + "       "
+                    + nowTide.getString("type");
 
             // this is for whether the tide is rising or falling
-            if (nowTideFloat > lastTideFloat)
-                tide +=  '\u2191';
-            else
-                tide += '\u2193';
         } catch (JSONException jsone){
             Log.wtf("failed downloading tidal information", jsone);
         }
-        return tide.substring(10);
+        return "    " + tide.substring(11);
     }
 
     private String getTideDate(JSONObject object)
@@ -152,7 +158,7 @@ public class LocalTideDataFragment extends Fragment {
         } catch (JSONException jsone){
             Log.wtf("failed downloading tidal information", jsone);
         }
-        return "    Date:    " + objectsDate.substring(0,10);
+        return "    DATE:    " + objectsDate.substring(0,10);
 
     }
 
@@ -168,7 +174,6 @@ public class LocalTideDataFragment extends Fragment {
 
         private String GetTideDataURL(Context context){
             String url = "Error Finding Tide URL";
-            final JSONArray[] jsonPredictions = new JSONArray[1];
             if (location.equals("Northern California"))
                 url = context.getString(R.string.northern_california_tide_url);
             else if (location.equals("Monterey Bay"))
