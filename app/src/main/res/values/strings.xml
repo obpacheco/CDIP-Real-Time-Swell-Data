@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CDIP Real Time Swell Data</string>
+    <string name="app_name">California Swell Data</string>
     <string name="refresh">refresh</string>
 
     <string name="northern_california_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/sf.png"</string>
