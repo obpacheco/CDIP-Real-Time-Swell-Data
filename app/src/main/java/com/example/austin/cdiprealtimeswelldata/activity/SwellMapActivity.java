@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -16,13 +17,12 @@ import com.example.austin.cdiprealtimeswelldata.fragment.LocalTideDataFragment;
 import com.squareup.picasso.Picasso;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import static com.example.austin.cdiprealtimeswelldata.utilities.GetSwellMapUtil.getSwellMapUrl;
 
 public class SwellMapActivity extends AppCompatActivity {
 
@@ -48,6 +48,7 @@ public class SwellMapActivity extends AppCompatActivity {
 
 
         pager = findViewById(R.id.pager);
+        pagerAdapter = null;
         pagerAdapter = new LocalPagerAdapter(getSupportFragmentManager(), mLocation);
         pager.setAdapter(pagerAdapter);
         CirclePageIndicator pageIndicator = findViewById(R.id.page_indicator);
@@ -75,6 +76,8 @@ public class SwellMapActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.refresh:
+                ActionMenuItemView refreshButton = findViewById(R.id.refresh);
+                //refreshButton.setEnabled(false);
                 refreshPicture();
                 return true;
             default:
@@ -82,10 +85,16 @@ public class SwellMapActivity extends AppCompatActivity {
         }
     }
 
+    public void activateRefreshButton() {
+        ActionMenuItemView refreshButton = findViewById(R.id.refresh);
+        refreshButton.setEnabled(true);
+    }
+
 
     public void refreshPicture()
     {
-        pagerAdapter = pagerAdapter = new LocalPagerAdapter(getSupportFragmentManager(), mLocation);
+        pagerAdapter = null;
+        pagerAdapter = new LocalPagerAdapter(getSupportFragmentManager(), mLocation);
         pager.setAdapter(pagerAdapter);
     }
 

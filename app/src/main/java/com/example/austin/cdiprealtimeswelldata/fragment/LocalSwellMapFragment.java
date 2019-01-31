@@ -1,7 +1,10 @@
 package com.example.austin.cdiprealtimeswelldata.fragment;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,25 +19,29 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.austin.cdiprealtimeswelldata.R;
+import com.example.austin.cdiprealtimeswelldata.utilities.SwellMapData;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static android.content.ContentValues.TAG;
-import static com.example.austin.cdiprealtimeswelldata.utilities.GetSwellMapUtil.getSwellMapUrl;
+import java.io.File;
 
+import static android.content.ContentValues.TAG;
 
 public class LocalSwellMapFragment extends Fragment {
 
 
     private View root;
     private String location;
-    private ImageView swellMapImage;
     private ProgressBar mProgressBar;
 
     public static LocalSwellMapFragment newInstance(String location) {
@@ -59,18 +66,27 @@ public class LocalSwellMapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setRetainInstance(true);
         root = inflater.inflate(R.layout.swell_map_fragment, container, false);
         mProgressBar = root.findViewById(R.id.progress_bar);
         mProgressBar.setIndeterminate(true);
 
-        swellMapImage = root.findViewById(R.id.image_local_swell_map);
-        Picasso.get().load(getSwellMapUrl(getContext(), location)).into(swellMapImage);
+        final ImageView swellMapImage = root.findViewById(R.id.image_local_swell_map);
+        final SwellMapData swellMapData = new SwellMapData(location);
+
+        Glide.with(getActivity())
+                .asBitmap()
+                .load(swellMapData.getSwellMapUrl(getContext()))
+                .into(new SimpleTarget<Bitmap>(){
+                    @Override
+                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                        swellMapImage.setImageBitmap(swellMapData.getCroppedBitmap(resource));
+                    }
+                });
 
         String url = getNowTideUrl();
         final TextView bottomText = root.findViewById(R.id.bottom_text);
         bottomText.setTextColor(Color.WHITE);
-        bottomText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f);
+        bottomText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
         Ion.with(getContext())
                 .load(url)
                 .asString()
@@ -84,12 +100,7 @@ public class LocalSwellMapFragment extends Fragment {
                             JSONObject lastObject = dataArray.getJSONObject(last);
                             String tide = "  TIDE:   "
                                     + lastObject.getString("v")
-                                    + "   FT"
-                                    + "   AT   ";
-                            String time = lastObject.getString("t");
-                            tide += time.substring(11);
-
-
+                                    + "   FT";
                             bottomText.setText(tide);
                         } catch (JSONException jsone){
                             Log.wtf("failed downloading current tidal information", jsone);
