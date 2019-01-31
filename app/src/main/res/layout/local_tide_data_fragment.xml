@@ -9,47 +9,151 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <LinearLayout
-            android:id="@+id/linearLayout1"
+        <TableLayout
+            android:layout_marginTop="20sp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
+            <TableRow
+                android:layout_width= "wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="right"
+                    android:id="@+id/firstTideCol1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="right"
+                    android:id="@+id/firstTideCol2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="left"
+                    android:id="@+id/firstTideCol3"/>
+            </TableRow>
+            <TableRow
+                android:layout_width= "match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="right"
+                    android:id="@+id/secondTideCol1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="right"
+                    android:id="@+id/secondTideCol2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="left"
+                    android:id="@+id/secondTideCol3"/>
+            </TableRow>
+            <TableRow
+                android:layout_width= "match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorText"
-                android:textSize="20sp"
-                android:layout_marginLeft="30dp"
-                android:id="@+id/firstTide"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorText"
-                android:textSize="20sp"
-                android:layout_marginLeft="30dp"
-                android:id="@+id/secondTide" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorText"
-                android:textSize="20sp"
-                android:layout_marginLeft="30dp"
-                android:id="@+id/nowTide" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorText"
-                android:textSize="20sp"
-                android:layout_marginLeft="30dp"
-                android:id="@+id/thirdTide"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorText"
-                android:textSize="20sp"
-                android:layout_marginLeft="30dp"
-                android:id="@+id/fourthTide"/>
-
+                android:background="@color/highlight_trueblack">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:id="@+id/thirdTideCol1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="right"
+                    android:id="@+id/thirdTideCol2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="left"
+                    android:id="@+id/thirdTideCol3"/>
+            </TableRow>
+            <TableRow
+                android:layout_width= "match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="right"
+                    android:id="@+id/fourthTideCol1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="right"
+                    android:id="@+id/fourthTideCol2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="left"
+                    android:id="@+id/fourthTideCol3"/>
+            </TableRow>
+            <TableRow
+                android:layout_width= "match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="right"
+                    android:id="@+id/fifthTideCol1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="right"
+                    android:id="@+id/fifthTideCol2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="left"
+                    android:id="@+id/fifthTideCol3"/>
+            </TableRow>
             <ProgressBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,6 +161,6 @@
                 android:layout_margin="10dp"
                 android:id="@+id/progress_bar"/>
 
-        </LinearLayout>
+        </TableLayout>
     </ScrollView>
 </LinearLayout>

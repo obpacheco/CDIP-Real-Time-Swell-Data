@@ -34,11 +34,6 @@ public class LocalTideDataFragment extends Fragment {
     private View root;
     private String location;
     private ProgressBar mProgressBar;
-    private TextView firstTide;
-    private TextView secondTide;
-    private TextView thirdTide;
-    private TextView fourthTide;
-    private TextView currentTide;
 
     public static LocalTideDataFragment newInstance(String location) {
         LocalTideDataFragment localTideDataFragment = new LocalTideDataFragment();
@@ -64,7 +59,6 @@ public class LocalTideDataFragment extends Fragment {
                              Bundle savedInstanceState) {
         setRetainInstance(true);
         root = inflater.inflate(R.layout.local_tide_data_fragment, container, false);
-        final LinearLayout linearLayout1 = root.findViewById(R.id.linearLayout1);
         mProgressBar = root.findViewById(R.id.progress_bar);
         mProgressBar.setIndeterminate(true);
 
@@ -85,15 +79,34 @@ public class LocalTideDataFragment extends Fragment {
                                     && counter < predictionsArray.length()) {
                                 counter++;
                             }
-                            firstTide = root.findViewById(R.id.firstTide);
-                            firstTide.setText(getTideString(predictionsArray, counter - 2));
-                            secondTide = root.findViewById(R.id.secondTide);
-                            secondTide.setText(getTideString(predictionsArray, counter - 1));
-                            thirdTide = root.findViewById(R.id.thirdTide);
-                            thirdTide.setText(getTideString(predictionsArray, counter));
+                            TextView firstTide1 = root.findViewById(R.id.firstTideCol1);
+                            firstTide1.setText(convertTimeToAMPM(predictionsArray, counter - 2));
+                            TextView firstTide2 = root.findViewById(R.id.firstTideCol2);
+                            firstTide2.setText(getTideString(predictionsArray, counter -2));
+                            TextView firstTide3 = root.findViewById(R.id.firstTideCol3);
+                            firstTide3.setText(getTideHighLow(predictionsArray, counter -2));
+
+                            TextView secondTide1 = root.findViewById(R.id.secondTideCol1);
+                            secondTide1.setText(convertTimeToAMPM(predictionsArray, counter - 1));
+                            TextView secondTide2 = root.findViewById(R.id.secondTideCol2);
+                            secondTide2.setText(getTideString(predictionsArray, counter -1));
+                            TextView secondTide3 = root.findViewById(R.id.secondTideCol3);
+                            secondTide3.setText(getTideHighLow(predictionsArray, counter -1));
+
+                            TextView fourthTide1 = root.findViewById(R.id.fourthTideCol1);
+                            fourthTide1.setText(convertTimeToAMPM(predictionsArray, counter));
+                            TextView fourthTide2 = root.findViewById(R.id.fourthTideCol2);
+                            fourthTide2.setText(getTideString(predictionsArray, counter));
+                            TextView fourthTide3 = root.findViewById(R.id.fourthTideCol3);
+                            fourthTide3.setText(getTideHighLow(predictionsArray, counter));
+
                             if (counter + 1 < predictionsArray.length()) {
-                                fourthTide = root.findViewById(R.id.fourthTide);
-                                fourthTide.setText(getTideString(predictionsArray, counter + 1));
+                                TextView fifthTide1 = root.findViewById(R.id.fifthTideCol1);
+                                fifthTide1.setText(convertTimeToAMPM(predictionsArray, counter + 1));
+                                TextView fifthTide2 = root.findViewById(R.id.fifthTideCol2);
+                                fifthTide2.setText(getTideString(predictionsArray, counter + 1));
+                                TextView fifthTide3 = root.findViewById(R.id.fifthTideCol3);
+                                fifthTide3.setText(getTideHighLow(predictionsArray, counter + 1));
                             }
                             mProgressBar.setVisibility(View.GONE);
                         } catch (JSONException jsone){
@@ -112,14 +125,13 @@ public class LocalTideDataFragment extends Fragment {
                             JSONObject json = new JSONObject(result);
                             JSONArray dataArray = json.getJSONArray("data");
                             int last = dataArray.length() - 1;
-                            currentTide = root.findViewById(R.id.nowTide);
-                            JSONObject nowTide = dataArray.getJSONObject(last);
-                            String tide = nowTide.getString("t")
-                                    + "       "
-                                    + nowTide.getString("v")
-                                    + " ft      ";
-                            currentTide.setText(tide.substring(11));
-                            currentTide.setBackgroundColor(getResources().getColor(R.color.highlight_trueblack));
+                            TextView currentTide1 = root.findViewById(R.id.thirdTideCol1);
+                            currentTide1.setText(convertTimeToAMPM(dataArray, last));
+                            TextView currentTide2 = root.findViewById(R.id.thirdTideCol2);
+                            currentTide2.setText(getTideString(dataArray,  last));
+                            TextView currentTide3 = root.findViewById(R.id.thirdTideCol3);
+                            currentTide3.setText(getString(R.string.last_observed));
+
                         } catch (JSONException jsone){
                             Log.wtf("failed downloading current tidal information", jsone);
                         }
@@ -129,32 +141,58 @@ public class LocalTideDataFragment extends Fragment {
         return root;
     }
 
+
     private String getTideString(JSONArray array, int index) {
         String tide = "";
         try {
             if (index <= array.length()) {
                 JSONObject nowTide = array.getJSONObject(index);
-                tide = nowTide.getString("t")
-                        + "       "
-                        + nowTide.getString("v")
-                        + " ft   "
-                        + nowTide.getString("type");
+                tide = nowTide.getString("v")
+                        + " ft";
             }
-            // this is for whether the tide is rising or falling
         } catch (JSONException jsone){
             Log.wtf("failed downloading tidal information", jsone);
         }
-        return tide.substring(11);
+        return tide;
     }
 
-    private String getTideDate(JSONObject object) {
-        String objectsDate = "";
+
+    private String getTideHighLow(JSONArray array, int index) {
+        String highLow = "";
         try {
-            objectsDate = object.getString("t");
+            if (index <= array.length()) {
+                JSONObject nowTide = array.getJSONObject(index);
+                highLow = nowTide.getString("type");
+            }
         } catch (JSONException jsone){
             Log.wtf("failed downloading tidal information", jsone);
         }
-        return "    DATE:    " + objectsDate.substring(0,10);
+        return highLow;
+    }
+
+    private String convertTimeToAMPM(JSONArray jsonArray, int index)
+    {
+        String time = "";
+        try {
+            JSONObject tideData = jsonArray.getJSONObject(index);
+            time = tideData.getString("t");
+            time = time.substring(11);
+            int hour = Integer.parseInt(time.substring(0,2));
+            time = time.substring(2);
+            Boolean isAM = Boolean.TRUE;
+            if (hour >= 12) {
+                isAM = Boolean.FALSE;
+                hour -= 12;
+            }
+            if (isAM) {
+                time = hour + time + " AM";
+            } else {
+                time = hour + time + " PM";
+            }
+        } catch (JSONException jsone){
+            Log.wtf("failed downloading tidal information", jsone);
+        }
+        return time;
     }
 
     // returns false if tidal time before current time
