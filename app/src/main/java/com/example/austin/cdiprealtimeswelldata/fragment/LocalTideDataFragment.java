@@ -34,8 +34,6 @@ public class LocalTideDataFragment extends Fragment {
     private View root;
     private String location;
     private ProgressBar mProgressBar;
-    private final int TIME_START;
-    private final int TIME_END;
 
     public static LocalTideDataFragment newInstance(String location) {
         LocalTideDataFragment localTideDataFragment = new LocalTideDataFragment();
@@ -45,10 +43,7 @@ public class LocalTideDataFragment extends Fragment {
     }
 
 
-    public LocalTideDataFragment() {
-        TIME_START = 6;
-        TIME_END = 20;
-    }
+    public LocalTideDataFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +76,7 @@ public class LocalTideDataFragment extends Fragment {
                             JSONObject json = new JSONObject(result);
                             JSONArray predictionsArray = json.getJSONArray("predictions");
 
+
                             TextView date = new TextView(getContext());
                             date.setText(getTideDate(predictionsArray.getJSONObject(0)));
                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -107,11 +103,49 @@ public class LocalTideDataFragment extends Fragment {
                             int hour = calendar.get(Calendar.HOUR_OF_DAY);
                             boolean highlight = true;
                             int previousTidesHour = 0;
+                            TextView test = new TextView(getContext());
+                            JSONObject testObject = predictionsArray.getJSONObject(0);
+                            String testDate = testObject.getString("t");
+                            String monthS = testDate.substring(5,7);
+                            String dayS = testDate.substring(8,10);
+                            String hourS = testDate.substring(11,13);
+                            String minuteS = testDate.substring(14,16);
+
+                            String sampleDate = monthS + "/"
+                                    + dayS + "/"
+                                    + hourS + "/"
+                                    + minuteS;
+                            test.setLayoutParams(params);
+                            test.setText(sampleDate);
+                            test.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
+                            test.setTextColor(Color.WHITE);
+                            linearLayout1.addView(test);
+
+                            TextView test2 = new TextView(getContext());
+                            int monthS2 = calendar.get(Calendar.MONTH) + 1;
+                            int dayS2 = calendar.get(Calendar.DAY_OF_MONTH);
+                            int hourS2 = calendar.get(Calendar.HOUR_OF_DAY);
+                            int minuteS2 = calendar.get(Calendar.MINUTE);
+
+                            String sampleDate2 = monthS2 + "/"
+                                    + dayS2 + "/"
+                                    + hourS2 + "/"
+                                    + minuteS2;
+                            test2.setLayoutParams(params);
+                            test2.setText(sampleDate2);
+                            test2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
+                            test2.setTextColor(Color.WHITE);
+                            linearLayout1.addView(test2);
+
 
                             for (int i = 0; i < predictionsArray.length(); i++ ) {
                                 TextView tide = new TextView(getContext());
                                 tide.setLayoutParams(params);
                                 String tideText = getTideString(predictionsArray, i);
+                                if (compareTime(predictionsArray, i))
+                                    tideText += "  true";
+                                else
+                                    tideText += "  false";
                                 tide.setText(tideText);
                                 tide.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
                                 tide.setTextColor(Color.WHITE);
@@ -123,6 +157,7 @@ public class LocalTideDataFragment extends Fragment {
                                 previousTidesHour = tidesHour;
                                 linearLayout1.addView(tide);
                             }
+
                             mProgressBar.setVisibility(View.GONE);
                         } catch (JSONException jsone){
                             Log.wtf("failed downloading tidal information", jsone);
@@ -132,10 +167,9 @@ public class LocalTideDataFragment extends Fragment {
         return root;
     }
 
-    private String getTideString(JSONArray array, int index)
-    {
+    private String getTideString(JSONArray array, int index) {
         String tide = "";
-        try{
+        try {
             JSONObject nowTide = array.getJSONObject(index);
             tide = nowTide.getString("t")
                     + "       "
@@ -150,8 +184,7 @@ public class LocalTideDataFragment extends Fragment {
         return "    " + tide.substring(11);
     }
 
-    private String getTideDate(JSONObject object)
-    {
+    private String getTideDate(JSONObject object) {
         String objectsDate = "";
         try {
             objectsDate = object.getString("t");
@@ -159,7 +192,41 @@ public class LocalTideDataFragment extends Fragment {
             Log.wtf("failed downloading tidal information", jsone);
         }
         return "    DATE:    " + objectsDate.substring(0,10);
+    }
 
+    // returns false if tidal time before current time
+    private boolean compareTime(JSONArray array, int index) {
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        try {
+            JSONObject testObject = array.getJSONObject(index);
+            String testDate = testObject.getString("t");
+            int tide_month = Integer.parseInt(testDate.substring(5, 7));
+            int tide_day = Integer.parseInt(testDate.substring(8, 10));
+            int tide_hour = Integer.parseInt(testDate.substring(11, 13));
+            int tide_minute = Integer.parseInt(testDate.substring(14, 16));
+            if (tide_month > month)
+                return true;
+            else if (tide_month == month) {
+                if (tide_day > day)
+                    return true;
+                else if (tide_day == day) {
+                    if (tide_hour >= hour)
+                        return true;
+                    else if (tide_hour == hour)
+                        if (tide_minute >= minute)
+                            return true;
+                }
+            }
+            return false;
+        } catch (JSONException jsone) {
+            Log.wtf("failed downloading tidal information", jsone);
+        }
+        return false;
     }
 
     @Override
