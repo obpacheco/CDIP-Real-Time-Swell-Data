@@ -18,26 +18,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorText"
+                android:textSize="20sp"
+                android:layout_marginLeft="30dp"
                 android:id="@+id/firstTide"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorText"
+                android:textSize="20sp"
+                android:layout_marginLeft="30dp"
                 android:id="@+id/secondTide" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorText"
+                android:textSize="20sp"
+                android:layout_marginLeft="30dp"
                 android:id="@+id/nowTide" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorText"
+                android:textSize="20sp"
+                android:layout_marginLeft="30dp"
                 android:id="@+id/thirdTide"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorText"
+                android:textSize="20sp"
+                android:layout_marginLeft="30dp"
                 android:id="@+id/fourthTide"/>
 
             <ProgressBar

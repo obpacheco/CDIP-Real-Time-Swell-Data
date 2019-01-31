@@ -1,13 +1,8 @@
 package com.example.austin.cdiprealtimeswelldata.fragment;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -26,14 +21,11 @@ import com.example.austin.cdiprealtimeswelldata.R;
 import com.example.austin.cdiprealtimeswelldata.utilities.SwellMapData;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 
 import static android.content.ContentValues.TAG;
 

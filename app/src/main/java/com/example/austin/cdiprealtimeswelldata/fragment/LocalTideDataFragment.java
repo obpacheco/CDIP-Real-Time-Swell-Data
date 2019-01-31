@@ -34,6 +34,11 @@ public class LocalTideDataFragment extends Fragment {
     private View root;
     private String location;
     private ProgressBar mProgressBar;
+    private TextView firstTide;
+    private TextView secondTide;
+    private TextView thirdTide;
+    private TextView fourthTide;
+    private TextView currentTide;
 
     public static LocalTideDataFragment newInstance(String location) {
         LocalTideDataFragment localTideDataFragment = new LocalTideDataFragment();
@@ -63,8 +68,7 @@ public class LocalTideDataFragment extends Fragment {
         mProgressBar = root.findViewById(R.id.progress_bar);
         mProgressBar.setIndeterminate(true);
 
-        GetTideDataUtil getTideDataUtil = new GetTideDataUtil();
-        String url = getTideDataUtil.GetTideDataURL(getContext());
+        String url = GetTideDataURL();
 
         Ion.with(getContext())
                 .load(url)
@@ -75,113 +79,72 @@ public class LocalTideDataFragment extends Fragment {
                         try {
                             JSONObject json = new JSONObject(result);
                             JSONArray predictionsArray = json.getJSONArray("predictions");
-
-
-                            TextView date = new TextView(getContext());
-                            date.setText(getTideDate(predictionsArray.getJSONObject(0)));
-                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                            params.weight = 1.0f;
-                            date.setTextColor(Color.WHITE);
-                            date.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
-                            linearLayout1.addView(date);
-                            TextView blankLine = new TextView(getContext());
-                            linearLayout1.addView(blankLine);
-                            TextView units = new TextView(getContext());
-                            String unitString = "    "
-                                    + "TIME"
-                                    + "        "
-                                    + "FT"
-                                    + "            "
-                                    + "H/L";
-                            units.setText(unitString);
-                            units.setTextColor(Color.WHITE);
-                            units.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
-                            linearLayout1.addView(units);
-
-                            Calendar calendar = Calendar.getInstance();
-                            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                            boolean highlight = true;
-                            int previousTidesHour = 0;
-                            TextView test = new TextView(getContext());
-                            JSONObject testObject = predictionsArray.getJSONObject(0);
-                            String testDate = testObject.getString("t");
-                            String monthS = testDate.substring(5,7);
-                            String dayS = testDate.substring(8,10);
-                            String hourS = testDate.substring(11,13);
-                            String minuteS = testDate.substring(14,16);
-
-                            String sampleDate = monthS + "/"
-                                    + dayS + "/"
-                                    + hourS + "/"
-                                    + minuteS;
-                            test.setLayoutParams(params);
-                            test.setText(sampleDate);
-                            test.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
-                            test.setTextColor(Color.WHITE);
-                            linearLayout1.addView(test);
-
-                            TextView test2 = new TextView(getContext());
-                            int monthS2 = calendar.get(Calendar.MONTH) + 1;
-                            int dayS2 = calendar.get(Calendar.DAY_OF_MONTH);
-                            int hourS2 = calendar.get(Calendar.HOUR_OF_DAY);
-                            int minuteS2 = calendar.get(Calendar.MINUTE);
-
-                            String sampleDate2 = monthS2 + "/"
-                                    + dayS2 + "/"
-                                    + hourS2 + "/"
-                                    + minuteS2;
-                            test2.setLayoutParams(params);
-                            test2.setText(sampleDate2);
-                            test2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
-                            test2.setTextColor(Color.WHITE);
-                            linearLayout1.addView(test2);
-
-
-                            for (int i = 0; i < predictionsArray.length(); i++ ) {
-                                TextView tide = new TextView(getContext());
-                                tide.setLayoutParams(params);
-                                String tideText = getTideString(predictionsArray, i);
-                                if (compareTime(predictionsArray, i))
-                                    tideText += "  true";
-                                else
-                                    tideText += "  false";
-                                tide.setText(tideText);
-                                tide.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
-                                tide.setTextColor(Color.WHITE);
-                                int tidesHour = Integer.parseInt(tideText.substring(4,6));
-                                if (highlight && hour <= tidesHour || highlight && previousTidesHour > tidesHour){
-                                    tide.setBackgroundColor(getResources().getColor(R.color.highlight_trueblack));
-                                    highlight = false;
-                                }
-                                previousTidesHour = tidesHour;
-                                linearLayout1.addView(tide);
+                            int counter = 0;
+                            // counter gets the first index that points to a tide in the future
+                            while (!compareTime(predictionsArray, counter)
+                                    && counter < predictionsArray.length()) {
+                                counter++;
                             }
-
+                            firstTide = root.findViewById(R.id.firstTide);
+                            firstTide.setText(getTideString(predictionsArray, counter - 2));
+                            secondTide = root.findViewById(R.id.secondTide);
+                            secondTide.setText(getTideString(predictionsArray, counter - 1));
+                            thirdTide = root.findViewById(R.id.thirdTide);
+                            thirdTide.setText(getTideString(predictionsArray, counter));
+                            if (counter + 1 < predictionsArray.length()) {
+                                fourthTide = root.findViewById(R.id.fourthTide);
+                                fourthTide.setText(getTideString(predictionsArray, counter + 1));
+                            }
                             mProgressBar.setVisibility(View.GONE);
                         } catch (JSONException jsone){
                             Log.wtf("failed downloading tidal information", jsone);
                         }
                     }
                 });
+
+        Ion.with(getContext())
+                .load(getNowTideUrl())
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        try {
+                            JSONObject json = new JSONObject(result);
+                            JSONArray dataArray = json.getJSONArray("data");
+                            int last = dataArray.length() - 1;
+                            currentTide = root.findViewById(R.id.nowTide);
+                            JSONObject nowTide = dataArray.getJSONObject(last);
+                            String tide = nowTide.getString("t")
+                                    + "       "
+                                    + nowTide.getString("v")
+                                    + " ft      ";
+                            currentTide.setText(tide.substring(11));
+                            currentTide.setBackgroundColor(getResources().getColor(R.color.highlight_trueblack));
+                        } catch (JSONException jsone){
+                            Log.wtf("failed downloading current tidal information", jsone);
+                        }
+                    }
+                });
+
         return root;
     }
 
     private String getTideString(JSONArray array, int index) {
         String tide = "";
         try {
-            JSONObject nowTide = array.getJSONObject(index);
-            tide = nowTide.getString("t")
-                    + "       "
-                    + nowTide.getString("v")
-                    + "       "
-                    + nowTide.getString("type");
-
+            if (index <= array.length()) {
+                JSONObject nowTide = array.getJSONObject(index);
+                tide = nowTide.getString("t")
+                        + "       "
+                        + nowTide.getString("v")
+                        + " ft   "
+                        + nowTide.getString("type");
+            }
             // this is for whether the tide is rising or falling
         } catch (JSONException jsone){
             Log.wtf("failed downloading tidal information", jsone);
         }
-        return "    " + tide.substring(11);
+        return tide.substring(11);
     }
 
     private String getTideDate(JSONObject object) {
@@ -215,7 +178,7 @@ public class LocalTideDataFragment extends Fragment {
                 if (tide_day > day)
                     return true;
                 else if (tide_day == day) {
-                    if (tide_hour >= hour)
+                    if (tide_hour > hour)
                         return true;
                     else if (tide_hour == hour)
                         if (tide_minute >= minute)
@@ -235,23 +198,31 @@ public class LocalTideDataFragment extends Fragment {
         root = null;
     }
 
-    private class GetTideDataUtil {
 
-        private GetTideDataUtil(){}
+    private String GetTideDataURL(){
+        String url = "Error Finding Tide URL";
+        if (location.equals("Northern California"))
+            url = getContext().getString(R.string.northern_california_tide_url);
+        else if (location.equals("Monterey Bay"))
+            url = getContext().getString(R.string.monterey_tide_url);
+        else if (location.equals("Central Coast"))
+            url = getContext().getString(R.string.central_coast_tide_url);
+        else if (location.equals("Southern California"))
+            url = getContext().getString(R.string.southern_california_tide_url);
+        return url;
+    }
 
-        private String GetTideDataURL(Context context){
-            String url = "Error Finding Tide URL";
-            if (location.equals("Northern California"))
-                url = context.getString(R.string.northern_california_tide_url);
-            else if (location.equals("Monterey Bay"))
-                url = context.getString(R.string.monterey_tide_url);
-            else if (location.equals("Central Coast"))
-                url = context.getString(R.string.central_coast_tide_url);
-            else if (location.equals("Southern California"))
-                url = context.getString(R.string.southern_california_tide_url);
-
-            return url;
-        }
+    private String getNowTideUrl() {
+        String url = "Error Finding Tide URL";
+        if (location.equals("Northern California"))
+            url = getContext().getString(R.string.northern_california_now_tide_url);
+        else if (location.equals("Monterey Bay"))
+            url = getContext().getString(R.string.monterey_tide_now_tide_url);
+        else if (location.equals("Central Coast"))
+            url = getContext().getString(R.string.central_coast_now_tide_url);
+        else if (location.equals("Southern California"))
+            url = getContext().getString(R.string.southern_california_now_tide_url);
+        return url;
     }
 
 

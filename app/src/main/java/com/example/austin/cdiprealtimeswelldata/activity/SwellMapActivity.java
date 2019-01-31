@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.example.austin.cdiprealtimeswelldata.R;
 import com.example.austin.cdiprealtimeswelldata.fragment.LocalSwellMapFragment;
 import com.example.austin.cdiprealtimeswelldata.fragment.LocalTideDataFragment;
-import com.squareup.picasso.Picasso;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import androidx.appcompat.view.menu.ActionMenuItemView;
