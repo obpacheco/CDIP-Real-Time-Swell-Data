@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.util.TypedValue;
@@ -29,12 +30,13 @@ import org.json.JSONObject;
 
 import static android.content.ContentValues.TAG;
 
-public class LocalSwellMapFragment extends Fragment {
+public class LocalSwellMapFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
 
     private View root;
     private String location;
     private ProgressBar mProgressBar;
+    private SwipeRefreshLayout swipeLayout;
 
     public static LocalSwellMapFragment newInstance(String location) {
         LocalSwellMapFragment localSwellMapFragment = new LocalSwellMapFragment();
@@ -62,23 +64,60 @@ public class LocalSwellMapFragment extends Fragment {
         mProgressBar = root.findViewById(R.id.progress_bar);
         mProgressBar.setIndeterminate(true);
 
-        final ImageView swellMapImage = root.findViewById(R.id.image_local_swell_map);
-        final SwellMapData swellMapData = new SwellMapData(location);
+        setSwellImage();
+        setTideText();
 
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        swipeLayout = getActivity().findViewById(R.id.swipe_container_swell);
+        swipeLayout.setOnRefreshListener(this);
+        swipeLayout.setColorSchemeColors(getResources().getColor(android.R.color.holo_green_dark),
+                getResources().getColor(android.R.color.holo_red_dark),
+                getResources().getColor(android.R.color.holo_blue_dark),
+                getResources().getColor(android.R.color.holo_orange_dark));
+    }
+
+    @Override
+    public void onRefresh() {
+        emptyViews();
+        setSwellImage();
+        setTideText();
+    }
+
+    private void emptyViews() {
+        ImageView emptyImage = root.findViewById(R.id.image_local_swell_map);
+        emptyImage.setImageResource(android.R.color.transparent);
+        TextView emptyText = root.findViewById(R.id.bottom_text);
+        emptyText.setText("");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        root = null;
+    }
+
+    private void setSwellImage() {
+        final SwellMapData swellMapData = new SwellMapData(location);
         Glide.with(getActivity())
                 .asBitmap()
                 .load(swellMapData.getSwellMapUrl(getContext()))
                 .into(new SimpleTarget<Bitmap>(){
                     @Override
                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                        ImageView swellMapImage = root.findViewById(R.id.image_local_swell_map);
                         swellMapImage.setImageBitmap(swellMapData.getCroppedBitmap(resource));
+                        swipeLayout.setRefreshing(false);
                     }
                 });
 
+    }
+
+    private void setTideText() {
         String url = getNowTideUrl();
-        final TextView bottomText = root.findViewById(R.id.bottom_text);
-        bottomText.setTextColor(Color.WHITE);
-        bottomText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
         Ion.with(getContext())
                 .load(url)
                 .asString()
@@ -86,6 +125,7 @@ public class LocalSwellMapFragment extends Fragment {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         try {
+                            TextView bottomText = root.findViewById(R.id.bottom_text);
                             if (result!= null) {
                                 JSONObject json = new JSONObject(result);
                                 JSONArray dataArray = json.getJSONArray("data");
@@ -101,14 +141,6 @@ public class LocalSwellMapFragment extends Fragment {
                         }
                     }
                 });
-
-        return root;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        root = null;
     }
 
     private String getNowTideUrl() {

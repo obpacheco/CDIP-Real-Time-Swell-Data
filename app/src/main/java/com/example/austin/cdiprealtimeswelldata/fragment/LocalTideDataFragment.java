@@ -5,7 +5,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -30,11 +34,12 @@ import java.util.Calendar;
 import static android.content.ContentValues.TAG;
 
 
-public class LocalTideDataFragment extends Fragment {
+public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private View root;
     private String location;
     private ProgressBar mProgressBar;
+    private SwipeRefreshLayout swipeLayout;
 
     public static LocalTideDataFragment newInstance(String location) {
         LocalTideDataFragment localTideDataFragment = new LocalTideDataFragment();
@@ -52,7 +57,6 @@ public class LocalTideDataFragment extends Fragment {
         if (location == null) {
             Log.e(TAG, TAG + " was called without location");
         }
-
     }
 
     @Override
@@ -62,9 +66,28 @@ public class LocalTideDataFragment extends Fragment {
         root = inflater.inflate(R.layout.local_tide_data_fragment, container, false);
         mProgressBar = root.findViewById(R.id.progress_bar);
         mProgressBar.setIndeterminate(true);
+        setTideViews();
+        return root;
+    }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        swipeLayout = getActivity().findViewById(R.id.swipe_container_tide);
+        swipeLayout.setOnRefreshListener(this);
+        swipeLayout.setColorSchemeColors(getResources().getColor(android.R.color.holo_green_dark),
+                getResources().getColor(android.R.color.holo_red_dark),
+                getResources().getColor(android.R.color.holo_blue_dark),
+                getResources().getColor(android.R.color.holo_orange_dark));
+    }
+
+    @Override
+    public void onRefresh() {
+        emptyTideViews();
+        setTideViews();
+    }
+
+    private void setTideViews() {
         String url = GetTideDataURL();
-
         Ion.with(getContext())
                 .load(url)
                 .asString()
@@ -113,6 +136,7 @@ public class LocalTideDataFragment extends Fragment {
                                 TextView currentTide1 = root.findViewById(R.id.thirdTideCol1);
                                 currentTide1.setGravity(Gravity.RIGHT);
 
+                                swipeLayout.setRefreshing(false);
                                 mProgressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException jsone){
@@ -148,7 +172,6 @@ public class LocalTideDataFragment extends Fragment {
                     }
                 });
 
-        return root;
     }
 
 
@@ -242,12 +265,46 @@ public class LocalTideDataFragment extends Fragment {
         return false;
     }
 
+    private void emptyTideViews() {
+        TextView emptyText = root.findViewById(R.id.firstTideCol1);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.firstTideCol2);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.firstTideCol3);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.secondTideCol1);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.secondTideCol2);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.secondTideCol3);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.thirdTideCol1);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.thirdTideCol2);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.thirdTideCol3);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.fourthTideCol1);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.fourthTideCol2);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.fourthTideCol3);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.fifthTideCol1);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.fifthTideCol2);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.fifthTideCol3);
+        emptyText.setText("");
+        TableRow highLightRow = root.findViewById(R.id.thirdTideCol);
+        highLightRow.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         root = null;
     }
-
 
     private String GetTideDataURL(){
         String url = "Error Finding Tide URL";

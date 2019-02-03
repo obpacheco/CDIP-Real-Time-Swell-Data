@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private Button centralCoast;
     private Button southernCalifornia;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
-        setStatusBarColor();
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setStatusBarColor();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

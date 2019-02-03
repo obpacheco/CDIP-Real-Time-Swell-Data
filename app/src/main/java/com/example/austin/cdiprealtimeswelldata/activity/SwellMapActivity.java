@@ -38,7 +38,6 @@ public class SwellMapActivity extends AppCompatActivity {
     private static final int POS_TIDE = 1;
     private static final int NUM_FRAGMENTS = 2;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +59,9 @@ public class SwellMapActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
-        setStatusBarColor();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setStatusBarColor();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -92,12 +93,6 @@ public class SwellMapActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    public void activateRefreshButton() {
-        ActionMenuItemView refreshButton = findViewById(R.id.refresh);
-        refreshButton.setEnabled(true);
-    }
-
 
     public void refreshPicture()
     {
