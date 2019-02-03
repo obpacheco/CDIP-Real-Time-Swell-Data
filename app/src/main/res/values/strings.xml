@@ -2,6 +2,7 @@
     <string name="app_name">California Swell Data</string>
     <string name="refresh">refresh</string>
     <string name="last_observed">Last Observed</string>
+    <string name="tides">Tides</string>
 
     <string name="northern_california_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/sf.png"</string>
     <string name="monterey_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/monterey.png"</string>

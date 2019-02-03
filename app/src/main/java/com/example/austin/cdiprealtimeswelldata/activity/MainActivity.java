@@ -1,11 +1,14 @@
 package com.example.austin.cdiprealtimeswelldata.activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.austin.cdiprealtimeswelldata.R;
@@ -19,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Button centralCoast;
     private Button southernCalifornia;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +62,16 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
-
+        setStatusBarColor();
 
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBarColor() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+    }
+
 
 
     public void openNorthernCalifornia(){

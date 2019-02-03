@@ -64,17 +64,17 @@ public class SwellMapData {
                 break;
 
             case MONTEREY:
-                x_start = 104;
-                y_start = 106;
-                width = 469;
-                height = 576;
+                x_start = 108;
+                y_start = 110;
+                width = 461;
+                height = 569;
                 break;
 
             case CENTRAL_COAST:
-                x_start = 72;
-                y_start = 83;
-                width = 330;
-                height = 585;
+                x_start = 76;
+                y_start = 87;
+                width = 322;
+                height = 570;
                 break;
 
             case SOUTHERN_CALIFORNIA:

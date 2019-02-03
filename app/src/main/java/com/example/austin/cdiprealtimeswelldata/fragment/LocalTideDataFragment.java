@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.austin.cdiprealtimeswelldata.R;
@@ -71,44 +72,49 @@ public class LocalTideDataFragment extends Fragment {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         try {
-                            JSONObject json = new JSONObject(result);
-                            JSONArray predictionsArray = json.getJSONArray("predictions");
-                            int counter = 0;
-                            // counter gets the first index that points to a tide in the future
-                            while (!compareTime(predictionsArray, counter)
-                                    && counter < predictionsArray.length()) {
-                                counter++;
+                            if (result != null) {
+                                JSONObject json = new JSONObject(result);
+                                JSONArray predictionsArray = json.getJSONArray("predictions");
+                                int counter = 0;
+                                // counter gets the first index that points to a tide in the future
+                                while (!compareTime(predictionsArray, counter)
+                                        && counter < predictionsArray.length()) {
+                                    counter++;
+                                }
+                                TextView firstTide1 = root.findViewById(R.id.firstTideCol1);
+                                firstTide1.setText(convertTimeToAMPM(predictionsArray, counter - 2));
+                                TextView firstTide2 = root.findViewById(R.id.firstTideCol2);
+                                firstTide2.setText(getTideString(predictionsArray, counter - 2));
+                                TextView firstTide3 = root.findViewById(R.id.firstTideCol3);
+                                firstTide3.setText(getTideHighLow(predictionsArray, counter - 2));
+
+                                TextView secondTide1 = root.findViewById(R.id.secondTideCol1);
+                                secondTide1.setText(convertTimeToAMPM(predictionsArray, counter - 1));
+                                TextView secondTide2 = root.findViewById(R.id.secondTideCol2);
+                                secondTide2.setText(getTideString(predictionsArray, counter - 1));
+                                TextView secondTide3 = root.findViewById(R.id.secondTideCol3);
+                                secondTide3.setText(getTideHighLow(predictionsArray, counter - 1));
+
+                                TextView fourthTide1 = root.findViewById(R.id.fourthTideCol1);
+                                fourthTide1.setText(convertTimeToAMPM(predictionsArray, counter));
+                                TextView fourthTide2 = root.findViewById(R.id.fourthTideCol2);
+                                fourthTide2.setText(getTideString(predictionsArray, counter));
+                                TextView fourthTide3 = root.findViewById(R.id.fourthTideCol3);
+                                fourthTide3.setText(getTideHighLow(predictionsArray, counter));
+
+                                if (counter + 1 < predictionsArray.length()) {
+                                    TextView fifthTide1 = root.findViewById(R.id.fifthTideCol1);
+                                    fifthTide1.setText(convertTimeToAMPM(predictionsArray, counter + 1));
+                                    TextView fifthTide2 = root.findViewById(R.id.fifthTideCol2);
+                                    fifthTide2.setText(getTideString(predictionsArray, counter + 1));
+                                    TextView fifthTide3 = root.findViewById(R.id.fifthTideCol3);
+                                    fifthTide3.setText(getTideHighLow(predictionsArray, counter + 1));
+                                }
+                                TextView currentTide1 = root.findViewById(R.id.thirdTideCol1);
+                                currentTide1.setGravity(Gravity.RIGHT);
+
+                                mProgressBar.setVisibility(View.GONE);
                             }
-                            TextView firstTide1 = root.findViewById(R.id.firstTideCol1);
-                            firstTide1.setText(convertTimeToAMPM(predictionsArray, counter - 2));
-                            TextView firstTide2 = root.findViewById(R.id.firstTideCol2);
-                            firstTide2.setText(getTideString(predictionsArray, counter -2));
-                            TextView firstTide3 = root.findViewById(R.id.firstTideCol3);
-                            firstTide3.setText(getTideHighLow(predictionsArray, counter -2));
-
-                            TextView secondTide1 = root.findViewById(R.id.secondTideCol1);
-                            secondTide1.setText(convertTimeToAMPM(predictionsArray, counter - 1));
-                            TextView secondTide2 = root.findViewById(R.id.secondTideCol2);
-                            secondTide2.setText(getTideString(predictionsArray, counter -1));
-                            TextView secondTide3 = root.findViewById(R.id.secondTideCol3);
-                            secondTide3.setText(getTideHighLow(predictionsArray, counter -1));
-
-                            TextView fourthTide1 = root.findViewById(R.id.fourthTideCol1);
-                            fourthTide1.setText(convertTimeToAMPM(predictionsArray, counter));
-                            TextView fourthTide2 = root.findViewById(R.id.fourthTideCol2);
-                            fourthTide2.setText(getTideString(predictionsArray, counter));
-                            TextView fourthTide3 = root.findViewById(R.id.fourthTideCol3);
-                            fourthTide3.setText(getTideHighLow(predictionsArray, counter));
-
-                            if (counter + 1 < predictionsArray.length()) {
-                                TextView fifthTide1 = root.findViewById(R.id.fifthTideCol1);
-                                fifthTide1.setText(convertTimeToAMPM(predictionsArray, counter + 1));
-                                TextView fifthTide2 = root.findViewById(R.id.fifthTideCol2);
-                                fifthTide2.setText(getTideString(predictionsArray, counter + 1));
-                                TextView fifthTide3 = root.findViewById(R.id.fifthTideCol3);
-                                fifthTide3.setText(getTideHighLow(predictionsArray, counter + 1));
-                            }
-                            mProgressBar.setVisibility(View.GONE);
                         } catch (JSONException jsone){
                             Log.wtf("failed downloading tidal information", jsone);
                         }
@@ -122,15 +128,19 @@ public class LocalTideDataFragment extends Fragment {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         try {
-                            JSONObject json = new JSONObject(result);
-                            JSONArray dataArray = json.getJSONArray("data");
-                            int last = dataArray.length() - 1;
-                            TextView currentTide1 = root.findViewById(R.id.thirdTideCol1);
-                            currentTide1.setText(convertTimeToAMPM(dataArray, last));
-                            TextView currentTide2 = root.findViewById(R.id.thirdTideCol2);
-                            currentTide2.setText(getTideString(dataArray,  last));
-                            TextView currentTide3 = root.findViewById(R.id.thirdTideCol3);
-                            currentTide3.setText(getString(R.string.last_observed));
+                            if (result != null) {
+                                JSONObject json = new JSONObject(result);
+                                JSONArray dataArray = json.getJSONArray("data");
+                                int last = dataArray.length() - 1;
+                                TextView currentTide1 = root.findViewById(R.id.thirdTideCol1);
+                                currentTide1.setText(convertTimeToAMPM(dataArray, last));
+                                TextView currentTide2 = root.findViewById(R.id.thirdTideCol2);
+                                currentTide2.setText(getTideString(dataArray, last));
+                                TextView currentTide3 = root.findViewById(R.id.thirdTideCol3);
+                                currentTide3.setText(getString(R.string.last_observed));
+                                TableRow highLightRow = root.findViewById(R.id.thirdTideCol);
+                                highLightRow.setBackgroundColor(getResources().getColor(R.color.highlight_trueblack));
+                            }
 
                         } catch (JSONException jsone){
                             Log.wtf("failed downloading current tidal information", jsone);
@@ -182,7 +192,9 @@ public class LocalTideDataFragment extends Fragment {
             Boolean isAM = Boolean.TRUE;
             if (hour >= 12) {
                 isAM = Boolean.FALSE;
-                hour -= 12;
+                if (hour > 12) {
+                    hour -= 12;
+                }
             }
             if (isAM) {
                 time = hour + time + " AM";

@@ -86,15 +86,17 @@ public class LocalSwellMapFragment extends Fragment {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         try {
-                            JSONObject json = new JSONObject(result);
-                            JSONArray dataArray = json.getJSONArray("data");
-                            int last = dataArray.length() - 1;
-                            JSONObject lastObject = dataArray.getJSONObject(last);
-                            String tide = "  TIDE:   "
-                                    + lastObject.getString("v")
-                                    + "   FT";
-                            bottomText.setText(tide);
-                        } catch (JSONException jsone){
+                            if (result!= null) {
+                                JSONObject json = new JSONObject(result);
+                                JSONArray dataArray = json.getJSONArray("data");
+                                int last = dataArray.length() - 1;
+                                JSONObject lastObject = dataArray.getJSONObject(last);
+                                String tide = "  TIDE:   "
+                                        + lastObject.getString("v")
+                                        + "   FT";
+                                bottomText.setText(tide);
+                            }
+                        } catch (JSONException jsone) {
                             Log.wtf("failed downloading current tidal information", jsone);
                         }
                     }

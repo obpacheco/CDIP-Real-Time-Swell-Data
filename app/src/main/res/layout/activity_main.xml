@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:theme="@style/Theme.Base.CustomToolbarStyle"
     android:orientation="vertical">
     <include
         android:id="@+id/app_bar"
@@ -23,8 +24,9 @@
             android:layout_height="wrap_content"
             android:text="Northern California"
             android:fontFamily="sans-serif"
-            android:textSize="26sp"
+            android:textSize="32sp"
             android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
             android:background="@drawable/goldengate"
             android:layout_weight="1"/>
         <Button
@@ -34,7 +36,8 @@
             android:text="Monterey Bay"
             android:fontFamily="sans-serif"
             android:textStyle="bold"
-            android:textSize="26sp"
+            android:textSize="34sp"
+            android:textColor="@color/colorPrimaryDark"
             android:background="@drawable/santacruz"
             android:layout_weight="1"/>
         <Button
@@ -43,8 +46,9 @@
             android:layout_height="wrap_content"
             android:text="Central Coast"
             android:textStyle="bold"
-            android:textSize="26sp"
+            android:textSize="34sp"
             android:background="@drawable/morro"
+            android:textColor="@color/colorPrimaryDark"
             android:fontFamily="sans-serif"
             android:layout_weight="1"/>
         <Button
@@ -54,7 +58,8 @@
             android:text="Southern California"
             android:textStyle="bold"
             android:fontFamily="sans-serif"
-            android:textSize="26sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="32sp"
             android:background="@drawable/socal"
             android:layout_weight="1"/>
 

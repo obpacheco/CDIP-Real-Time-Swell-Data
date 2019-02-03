@@ -1,12 +1,16 @@
 package com.example.austin.cdiprealtimeswelldata.activity;
 
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -34,6 +38,7 @@ public class SwellMapActivity extends AppCompatActivity {
     private static final int POS_TIDE = 1;
     private static final int NUM_FRAGMENTS = 2;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +60,13 @@ public class SwellMapActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+        setStatusBarColor();
+    }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBarColor() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimary));
     }
 
     @Override
