@@ -12,7 +12,7 @@
     <string name="monterey_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/monterey.png"</string>
     <string name="central_coast_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/conception.png"</string>
     <string name="southern_california_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/socal_now.png"</string>
-    
+
     <string name="noaa_endpoint_tide_start" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&amp;range=48&amp;datum=MLLW&amp;station=</string>
     <string name="noaa_endpoint_tide_end" translatable="false">&amp;time_zone=lst_ldt&amp;units=english&amp;interval=hilo&amp;format=json</string>
 

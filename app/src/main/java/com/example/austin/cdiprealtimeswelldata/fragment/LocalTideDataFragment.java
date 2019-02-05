@@ -69,10 +69,10 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
     public void onViewCreated(View view, Bundle savedInstanceState) {
         swipeLayout = getActivity().findViewById(R.id.swipe_container_tide);
         swipeLayout.setOnRefreshListener(this);
-        swipeLayout.setColorSchemeColors(getResources().getColor(android.R.color.holo_green_dark),
-                getResources().getColor(android.R.color.holo_red_dark),
+        swipeLayout.setColorSchemeColors(getResources().getColor(android.R.color.holo_red_dark),
                 getResources().getColor(android.R.color.holo_blue_dark),
                 getResources().getColor(android.R.color.holo_orange_dark));
+        swipeLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.progress_circle));
     }
 
     @Override
@@ -184,11 +184,9 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
                                 JSONArray dataArray = json.getJSONArray("data");
                                 int last = dataArray.length() - 1;
                                 TextView currentTide1 = root.findViewById(R.id.thirdTideCol1);
-                                currentTide1.setText(convertTimeToAMPM(dataArray, last));
+                                currentTide1.setText("Now");
                                 TextView currentTide2 = root.findViewById(R.id.thirdTideCol2);
                                 currentTide2.setText(getTideString(dataArray, last));
-                                TextView currentTide3 = root.findViewById(R.id.thirdTideCol3);
-                                currentTide3.setText(getString(R.string.last_observed));
                                 TableRow highLightRow = root.findViewById(R.id.thirdTideCol);
                                 highLightRow.setBackgroundColor(getResources().getColor(R.color.highlight_trueblack));
                             }
@@ -245,6 +243,9 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
                 if (hour > 12) {
                     hour -= 12;
                 }
+            }
+            if (hour == 0) {
+                hour = 12;
             }
             if (isAM) {
                 time = hour + time + " AM";

@@ -75,10 +75,10 @@ public class LocalSwellMapFragment extends Fragment implements SwipeRefreshLayou
     public void onViewCreated(View view, Bundle savedInstanceState) {
         swipeLayout = getActivity().findViewById(R.id.swipe_container_swell);
         swipeLayout.setOnRefreshListener(this);
-        swipeLayout.setColorSchemeColors(getResources().getColor(android.R.color.holo_green_dark),
-                getResources().getColor(android.R.color.holo_red_dark),
+        swipeLayout.setColorSchemeColors(getResources().getColor(android.R.color.holo_red_dark),
                 getResources().getColor(android.R.color.holo_blue_dark),
                 getResources().getColor(android.R.color.holo_orange_dark));
+        swipeLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.progress_circle));
     }
 
     @Override
