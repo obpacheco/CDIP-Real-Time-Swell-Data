@@ -3,21 +3,29 @@
     <string name="refresh">refresh</string>
     <string name="last_observed">Last Observed</string>
     <string name="tides">Tides</string>
+    <string name="wind">Wind Conditions</string>
+    <string name="speed">Speed</string>
+    <string name="direction">Direction</string>
+    <string name="gusts">Gusts</string>
 
     <string name="northern_california_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/sf.png"</string>
     <string name="monterey_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/monterey.png"</string>
     <string name="central_coast_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/conception.png"</string>
     <string name="southern_california_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/socal_now.png"</string>
+    
+    <string name="noaa_endpoint_tide_start" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&amp;range=48&amp;datum=MLLW&amp;station=</string>
+    <string name="noaa_endpoint_tide_end" translatable="false">&amp;time_zone=lst_ldt&amp;units=english&amp;interval=hilo&amp;format=json</string>
 
-    <string name="northern_california_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&amp;range=48&amp;datum=MLLW&amp;station=9414290&amp;time_zone=lst_ldt&amp;units=english&amp;interval=hilo&amp;format=json</string>
-    <string name="monterey_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&amp;range=48&amp;datum=MLLW&amp;station=9413450&amp;time_zone=lst_ldt&amp;units=english&amp;interval=hilo&amp;format=json</string>
-    <string name="central_coast_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&amp;range=48&amp;datum=MLLW&amp;station=9412110&amp;time_zone=lst_ldt&amp;units=english&amp;interval=hilo&amp;format=json</string>
-    <string name="southern_california_tide_url" translatable="false"> https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&amp;range=48&amp;datum=MLLW&amp;station=9410840&amp;time_zone=lst_ldt&amp;units=english&amp;interval=hilo&amp;format=json</string>
+    <string name="noaa_endpoint_now_tide_start" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&amp;range=1&amp;datum=MLLW&amp;station=</string>
+    <string name="noaa_endpoint_now_tide_end" translatable="false">&amp;time_zone=lst_ldt&amp;units=english&amp;format=json</string>
 
-    <string name="northern_california_now_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&amp;range=1&amp;datum=MLLW&amp;station=9414290&amp;time_zone=lst_ldt&amp;units=english&amp;format=json</string>
-    <string name="monterey_tide_now_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&amp;range=1&amp;datum=MLLW&amp;station=9413450&amp;time_zone=lst_ldt&amp;units=english&amp;format=json</string>
-    <string name="central_coast_now_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&amp;range=1&amp;datum=MLLW&amp;station=9412110&amp;time_zone=lst_ldt&amp;units=english&amp;format=json</string>
-    <string name="southern_california_now_tide_url" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&amp;range=1&amp;datum=MLLW&amp;station=9410840&amp;time_zone=lst_ldt&amp;units=english&amp;format=json</string>
+    <string name="noaa_endpoint_wind_start" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=wind&amp;range=1&amp;station=</string>
+    <string name="noaa_endpoint_wind_end" translatable="false">&amp;time_zone=lst_ldt&amp;units=english&amp;interval=6&amp;format=json</string>
+
+    <string name="noaa_buoy_san_francisco" translatable="false">9414290</string>
+    <string name="noaa_buoy_monterey" translatable="false">9413450</string>
+    <string name="noaa_buoy_port_san_luis" translatable="false">9412110</string>
+    <string name="noaa_buoy_santa_monica" translatable="false">9410840</string>
 
 
 </resources>

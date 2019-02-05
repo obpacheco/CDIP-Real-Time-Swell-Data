@@ -3,6 +3,7 @@ package com.example.austin.cdiprealtimeswelldata.fragment;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -30,7 +31,7 @@ import org.json.JSONObject;
 
 import static android.content.ContentValues.TAG;
 
-public class LocalSwellMapFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class LocalSwellMapFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
     private View root;
@@ -105,7 +106,7 @@ public class LocalSwellMapFragment extends Fragment implements SwipeRefreshLayou
         Glide.with(getActivity())
                 .asBitmap()
                 .load(swellMapData.getSwellMapUrl(getContext()))
-                .into(new SimpleTarget<Bitmap>(){
+                .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                         ImageView swellMapImage = root.findViewById(R.id.image_local_swell_map);
@@ -126,7 +127,7 @@ public class LocalSwellMapFragment extends Fragment implements SwipeRefreshLayou
                     public void onCompleted(Exception e, String result) {
                         try {
                             TextView bottomText = root.findViewById(R.id.bottom_text);
-                            if (result!= null) {
+                            if (result != null) {
                                 JSONObject json = new JSONObject(result);
                                 JSONArray dataArray = json.getJSONArray("data");
                                 int last = dataArray.length() - 1;
@@ -144,15 +145,16 @@ public class LocalSwellMapFragment extends Fragment implements SwipeRefreshLayou
     }
 
     private String getNowTideUrl() {
-        String url = "Error Finding Tide URL";
+        String url = getContext().getString(R.string.noaa_endpoint_now_tide_start);
         if (location.equals("Northern California"))
-            url = getContext().getString(R.string.northern_california_now_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_san_francisco);
         else if (location.equals("Monterey Bay"))
-            url = getContext().getString(R.string.monterey_tide_now_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_monterey);
         else if (location.equals("Central Coast"))
-            url = getContext().getString(R.string.central_coast_now_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_port_san_luis);
         else if (location.equals("Southern California"))
-            url = getContext().getString(R.string.southern_california_now_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_santa_monica);
+        url += getContext().getString(R.string.noaa_endpoint_now_tide_end);
         return url;
     }
 

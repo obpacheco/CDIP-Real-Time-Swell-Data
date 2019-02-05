@@ -1,23 +1,17 @@
 package com.example.austin.cdiprealtimeswelldata.fragment;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.os.Bundle;
 
+import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Handler;
-import android.provider.DocumentsContract;
+import android.util.JsonReader;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -67,6 +61,7 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
         mProgressBar = root.findViewById(R.id.progress_bar);
         mProgressBar.setIndeterminate(true);
         setTideViews();
+        setWindViews();
         return root;
     }
 
@@ -83,11 +78,43 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         emptyTideViews();
+        emptyWindViews();
         setTideViews();
+        setWindViews();
     }
 
+    private void setWindViews() {
+        String url = GetWindDataUrl();
+        Ion.with(getContext())
+                .load(url)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        try{
+                            if (result != null) {
+                                JSONObject jsonObject = new JSONObject(result);
+                                JSONArray windArray = jsonObject.getJSONArray("data");
+                                int last = windArray.length() - 1;
+                                JSONObject currentWind = windArray.getJSONObject(last);
+                                TextView windSpeed = root.findViewById(R.id.windSpeed);
+                                windSpeed.setText(currentWind.getString("s") + " kn");
+                                TextView windDirection = root.findViewById(R.id.windDirection);
+                                windDirection.setText(currentWind.getString("dr"));
+                                TextView windGusts = root.findViewById(R.id.windGusts);
+                                windGusts.setText(currentWind.getString("g") + " kn");
+                            }
+
+                        } catch (JSONException jsone) {
+                            Log.wtf("failed downloading wind information", jsone);
+                        }
+                    }
+
+                });
+
+    }
     private void setTideViews() {
-        String url = GetTideDataURL();
+        String url = GetTideDataUrl();
         Ion.with(getContext())
                 .load(url)
                 .asString()
@@ -265,6 +292,15 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
         return false;
     }
 
+    private void emptyWindViews() {
+        TextView emptyText = root.findViewById(R.id.windSpeed);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.windDirection);
+        emptyText.setText("");
+        emptyText = root.findViewById(R.id.windGusts);
+        emptyText.setText("");
+    }
+
     private void emptyTideViews() {
         TextView emptyText = root.findViewById(R.id.firstTideCol1);
         emptyText.setText("");
@@ -306,29 +342,45 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
         root = null;
     }
 
-    private String GetTideDataURL(){
-        String url = "Error Finding Tide URL";
+    private String GetWindDataUrl() {
+        String url = getContext().getString(R.string.noaa_endpoint_wind_start);
         if (location.equals("Northern California"))
-            url = getContext().getString(R.string.northern_california_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_san_francisco);
         else if (location.equals("Monterey Bay"))
-            url = getContext().getString(R.string.monterey_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_monterey);
         else if (location.equals("Central Coast"))
-            url = getContext().getString(R.string.central_coast_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_port_san_luis);
         else if (location.equals("Southern California"))
-            url = getContext().getString(R.string.southern_california_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_santa_monica);
+        url += getContext().getString(R.string.noaa_endpoint_wind_end);
+        return url;
+    }
+
+    private String GetTideDataUrl(){
+        String url = getContext().getString(R.string.noaa_endpoint_tide_start);
+        if (location.equals("Northern California"))
+            url += getContext().getString(R.string.noaa_buoy_san_francisco);
+        else if (location.equals("Monterey Bay"))
+            url += getContext().getString(R.string.noaa_buoy_monterey);
+        else if (location.equals("Central Coast"))
+            url += getContext().getString(R.string.noaa_buoy_port_san_luis);
+        else if (location.equals("Southern California"))
+            url += getContext().getString(R.string.noaa_buoy_santa_monica);
+        url += getContext().getString(R.string.noaa_endpoint_tide_end);
         return url;
     }
 
     private String getNowTideUrl() {
-        String url = "Error Finding Tide URL";
+        String url = getContext().getString(R.string.noaa_endpoint_now_tide_start);
         if (location.equals("Northern California"))
-            url = getContext().getString(R.string.northern_california_now_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_san_francisco);
         else if (location.equals("Monterey Bay"))
-            url = getContext().getString(R.string.monterey_tide_now_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_monterey);
         else if (location.equals("Central Coast"))
-            url = getContext().getString(R.string.central_coast_now_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_port_san_luis);
         else if (location.equals("Southern California"))
-            url = getContext().getString(R.string.southern_california_now_tide_url);
+            url += getContext().getString(R.string.noaa_buoy_santa_monica);
+        url += getContext().getString(R.string.noaa_endpoint_now_tide_end);
         return url;
     }
 
