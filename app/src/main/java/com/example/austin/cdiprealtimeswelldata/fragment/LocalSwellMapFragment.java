@@ -1,14 +1,10 @@
 package com.example.austin.cdiprealtimeswelldata.fragment;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +27,12 @@ import org.json.JSONObject;
 
 import static android.content.ContentValues.TAG;
 
-public class LocalSwellMapFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class LocalSwellMapFragment extends Fragment{
 
 
     private View root;
     private String location;
     private ProgressBar mProgressBar;
-    private SwipeRefreshLayout swipeLayout;
 
     public static LocalSwellMapFragment newInstance(String location) {
         LocalSwellMapFragment localSwellMapFragment = new LocalSwellMapFragment();
@@ -72,30 +67,6 @@ public class LocalSwellMapFragment extends Fragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        swipeLayout = getActivity().findViewById(R.id.swipe_container_swell);
-        swipeLayout.setOnRefreshListener(this);
-        swipeLayout.setColorSchemeColors(getResources().getColor(android.R.color.holo_red_dark),
-                getResources().getColor(android.R.color.holo_blue_dark),
-                getResources().getColor(android.R.color.holo_orange_dark));
-        swipeLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.progress_circle));
-    }
-
-    @Override
-    public void onRefresh() {
-        emptyViews();
-        setSwellImage();
-        setTideText();
-    }
-
-    private void emptyViews() {
-        ImageView emptyImage = root.findViewById(R.id.image_local_swell_map);
-        emptyImage.setImageResource(android.R.color.transparent);
-        TextView emptyText = root.findViewById(R.id.bottom_text);
-        emptyText.setText("");
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         root = null;
@@ -111,7 +82,6 @@ public class LocalSwellMapFragment extends Fragment implements SwipeRefreshLayou
                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                         ImageView swellMapImage = root.findViewById(R.id.image_local_swell_map);
                         swellMapImage.setImageBitmap(swellMapData.getCroppedBitmap(resource));
-                        swipeLayout.setRefreshing(false);
                     }
                 });
 
