@@ -1,9 +1,12 @@
 package com.example.austin.cdiprealtimeswelldata.fragment;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +29,17 @@ import org.json.JSONObject;
 
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.austin.cdiprealtimeswelldata.utilities.BuoyIdGetter.getNowTideBuoyId;
+import static com.example.austin.cdiprealtimeswelldata.utilities.BuoyIdGetter.getTideBuoyId;
 
-public class LocalSwellMapFragment extends Fragment{
-
+public class LocalSwellMapFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private View root;
     private String location;
     private ProgressBar mProgressBar;
+    private SwipeRefreshLayout swipeLayout;
+    private SharedPreferences sharedPreferences;
 
     public static LocalSwellMapFragment newInstance(String location) {
         LocalSwellMapFragment localSwellMapFragment = new LocalSwellMapFragment();
@@ -51,6 +58,7 @@ public class LocalSwellMapFragment extends Fragment{
         if (location == null) {
             Log.e(TAG, TAG + " was called without location");
         }
+        sharedPreferences = getContext().getSharedPreferences("sharedPreferences", MODE_PRIVATE);
     }
 
     @Override
@@ -67,9 +75,38 @@ public class LocalSwellMapFragment extends Fragment{
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        swipeLayout = getActivity().findViewById(R.id.swipe_container_swell);
+        swipeLayout.setOnRefreshListener(this);
+        swipeLayout.setColorSchemeColors(getResources().getColor(android.R.color.holo_red_dark),
+                getResources().getColor(android.R.color.holo_blue_dark),
+                getResources().getColor(android.R.color.holo_orange_dark));
+        swipeLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.progress_circle));
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         root = null;
+    }
+
+    @Override
+    public void onRefresh() {
+        mProgressBar.setEnabled(true);
+        mProgressBar.setProgress(0);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setIndeterminate(true);
+        swipeLayout.setRefreshing(true);
+        emptyViews();
+        setSwellImage();
+        setTideText();
+    }
+
+    private void emptyViews() {
+        ImageView emptyImage = root.findViewById(R.id.image_local_swell_map);
+        emptyImage.setImageResource(android.R.color.transparent);
+        TextView emptyText = root.findViewById(R.id.bottom_text);
+        emptyText.setText("");
     }
 
     private void setSwellImage() {
@@ -106,6 +143,8 @@ public class LocalSwellMapFragment extends Fragment{
                                         + lastObject.getString("v")
                                         + "   FT";
                                 bottomText.setText(tide);
+                                swipeLayout.setRefreshing(false);
+                                mProgressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException jsone) {
                             Log.wtf("failed downloading current tidal information", jsone);
@@ -116,14 +155,7 @@ public class LocalSwellMapFragment extends Fragment{
 
     private String getNowTideUrl() {
         String url = getContext().getString(R.string.noaa_endpoint_now_tide_start);
-        if (location.equals("Northern California"))
-            url += getContext().getString(R.string.noaa_buoy_san_francisco);
-        else if (location.equals("Monterey Bay"))
-            url += getContext().getString(R.string.noaa_buoy_monterey);
-        else if (location.equals("Central Coast"))
-            url += getContext().getString(R.string.noaa_buoy_port_san_luis);
-        else if (location.equals("Southern California"))
-            url += getContext().getString(R.string.noaa_buoy_santa_monica);
+        url += getNowTideBuoyId(location, getContext(), sharedPreferences);
         url += getContext().getString(R.string.noaa_endpoint_now_tide_end);
         return url;
     }

@@ -1,6 +1,8 @@
 package com.example.austin.cdiprealtimeswelldata.fragment;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -26,6 +28,10 @@ import org.json.JSONObject;
 import java.util.Calendar;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.austin.cdiprealtimeswelldata.utilities.BuoyIdGetter.getNowTideBuoyId;
+import static com.example.austin.cdiprealtimeswelldata.utilities.BuoyIdGetter.getTideBuoyId;
+import static com.example.austin.cdiprealtimeswelldata.utilities.BuoyIdGetter.getWindBuoyId;
 
 
 public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -34,6 +40,7 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
     private String location;
     private ProgressBar mProgressBar;
     private SwipeRefreshLayout swipeLayout;
+    private SharedPreferences sharedPreferences;
 
     public static LocalTideDataFragment newInstance(String location) {
         LocalTideDataFragment localTideDataFragment = new LocalTideDataFragment();
@@ -51,6 +58,7 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
         if (location == null) {
             Log.e(TAG, TAG + " was called without location");
         }
+        sharedPreferences = getContext().getSharedPreferences("sharedPreferences", MODE_PRIVATE);
     }
 
     @Override
@@ -60,6 +68,7 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
         root = inflater.inflate(R.layout.local_tide_data_fragment, container, false);
         mProgressBar = root.findViewById(R.id.progress_bar);
         mProgressBar.setIndeterminate(true);
+        setTideHeader();
         setTideViews();
         setWindViews();
         return root;
@@ -77,10 +86,62 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
+        swipeLayout.setRefreshing(true);
         emptyTideViews();
         emptyWindViews();
+        setTideHeader();
         setTideViews();
         setWindViews();
+    }
+
+    private void setTideHeader() {
+        TextView tideConditionsHeader = root.findViewById(R.id.tideConditions);
+        String tideHeaderString = "Tides:  ";
+        if (location.equals("Northern California")) {
+            switch (sharedPreferences.getInt("buoy_northern_california", 0)) {
+                case 0:
+                    tideHeaderString += getString(R.string.san_francisco);
+                    break;
+                case 1:
+                    tideHeaderString += getString(R.string.arena_cove);
+                    break;
+                case 2:
+                    tideHeaderString += getString(R.string.bolinas);
+                    break;
+            }
+
+        } else if (location.equals("Monterey Bay")) {
+            switch (sharedPreferences.getInt("buoy_monterey", 0)) {
+                case 0:
+                    tideHeaderString += getString(R.string.monterey_buoy);
+                    break;
+            }
+        } else if (location.equals("Central Coast")) {
+            switch (sharedPreferences.getInt("buoy_central_coast", 0)) {
+                case 0:
+                    tideHeaderString += getString(R.string.port_san_luis);
+                    break;
+                case 1:
+                    tideHeaderString += getString(R.string.pt_conception);
+                    break;
+            }
+        } else if (location.equals("Southern California")) {
+            switch (sharedPreferences.getInt("buoy_southern_california", 0)) {
+                case 0:
+                    tideHeaderString += getString(R.string.santa_monica);
+                    break;
+                case 1:
+                    tideHeaderString += getString(R.string.santa_barbara);
+                    break;
+                case 2:
+                    tideHeaderString += getString(R.string.long_beach);
+                    break;
+                case 3:
+                    tideHeaderString += getString(R.string.la_jolla);
+                    break;
+            }
+        }
+        tideConditionsHeader.setText(tideHeaderString);
     }
 
     private void setWindViews() {
@@ -215,7 +276,7 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
     }
 
 
-    private String getTideHighLow(JSONArray array, int index) {
+    public String getTideHighLow(JSONArray array, int index) {
         String highLow = "";
         try {
             if (index <= array.length()) {
@@ -345,42 +406,21 @@ public class LocalTideDataFragment extends Fragment implements SwipeRefreshLayou
 
     private String GetWindDataUrl() {
         String url = getContext().getString(R.string.noaa_endpoint_wind_start);
-        if (location.equals("Northern California"))
-            url += getContext().getString(R.string.noaa_buoy_san_francisco);
-        else if (location.equals("Monterey Bay"))
-            url += getContext().getString(R.string.noaa_buoy_monterey);
-        else if (location.equals("Central Coast"))
-            url += getContext().getString(R.string.noaa_buoy_port_san_luis);
-        else if (location.equals("Southern California"))
-            url += getContext().getString(R.string.noaa_buoy_santa_monica);
+        url += getWindBuoyId(location, getContext(), sharedPreferences);
         url += getContext().getString(R.string.noaa_endpoint_wind_end);
         return url;
     }
 
     private String GetTideDataUrl(){
         String url = getContext().getString(R.string.noaa_endpoint_tide_start);
-        if (location.equals("Northern California"))
-            url += getContext().getString(R.string.noaa_buoy_san_francisco);
-        else if (location.equals("Monterey Bay"))
-            url += getContext().getString(R.string.noaa_buoy_monterey);
-        else if (location.equals("Central Coast"))
-            url += getContext().getString(R.string.noaa_buoy_port_san_luis);
-        else if (location.equals("Southern California"))
-            url += getContext().getString(R.string.noaa_buoy_santa_monica);
+        url += getTideBuoyId(location, getContext(), sharedPreferences);
         url += getContext().getString(R.string.noaa_endpoint_tide_end);
         return url;
     }
 
     private String getNowTideUrl() {
         String url = getContext().getString(R.string.noaa_endpoint_now_tide_start);
-        if (location.equals("Northern California"))
-            url += getContext().getString(R.string.noaa_buoy_san_francisco);
-        else if (location.equals("Monterey Bay"))
-            url += getContext().getString(R.string.noaa_buoy_monterey);
-        else if (location.equals("Central Coast"))
-            url += getContext().getString(R.string.noaa_buoy_port_san_luis);
-        else if (location.equals("Southern California"))
-            url += getContext().getString(R.string.noaa_buoy_santa_monica);
+        url += getNowTideBuoyId(location, getContext(), sharedPreferences);
         url += getContext().getString(R.string.noaa_endpoint_now_tide_end);
         return url;
     }

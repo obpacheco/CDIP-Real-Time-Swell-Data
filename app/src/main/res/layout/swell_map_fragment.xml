@@ -6,29 +6,50 @@
     android:background="@color/colorPrimaryLight"
     android:theme="@style/Theme.Base.CustomToolbarStyle">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_container_swell"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="10dp"
-        android:background="@color/colorPrimaryLight" />
+        android:background="@color/colorPrimaryLight">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryLight">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="0dp"
+                android:background="@color/colorPrimaryLight"/>
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
     <com.ortiz.touchview.TouchImageView
         android:id="@+id/image_local_swell_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/bottom_panel"
+        android:layout_marginBottom="25sp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@color/colorPrimaryLight"
         android:padding="2sp" />
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"
+        />
+
 
     <LinearLayout
         android:id="@+id/bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5sp"
         android:background="@color/colorPrimaryLight"
         android:orientation="horizontal">
 

@@ -4,8 +4,8 @@ package com.example.austin.cdiprealtimeswelldata.activity;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,7 +19,6 @@ import com.example.austin.cdiprealtimeswelldata.fragment.LocalSwellMapFragment;
 import com.example.austin.cdiprealtimeswelldata.fragment.LocalTideDataFragment;
 import com.viewpagerindicator.CirclePageIndicator;
 
-import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -38,6 +37,9 @@ public class SwellMapActivity extends AppCompatActivity {
     private static final int POS_TIDE = 1;
     private static final int NUM_FRAGMENTS = 2;
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,15 @@ public class SwellMapActivity extends AppCompatActivity {
         mLocation = bundle.getString("Location");
         setTitle(mLocation);
 
+        sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
+        if (!sharedPreferences.contains("buoy_northern_california")) {
+            editor = sharedPreferences.edit();
+            editor.putInt("buoy_northern_california", 0);
+            editor.putInt("buoy_monterey", 0);
+            editor.putInt("buoy_central_coast", 0);
+            editor.putInt("buoy_southern_california", 0);
+            editor.commit();
+        }
 
         pager = findViewById(R.id.pager);
         pagerAdapter = null;
@@ -78,27 +89,132 @@ public class SwellMapActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_refresh, menu);
+        inflateMenuOptions(menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()){
-            case R.id.refresh:
-                ActionMenuItemView refreshButton = findViewById(R.id.refresh);
-                //refreshButton.setEnabled(false);
-                refreshPicture();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        editor = sharedPreferences.edit();
+        if (mLocation.equals("Northern California")) {
+            switch (item.getItemId()) {
+                case R.id.refresh:
+                    refreshPicture();
+                    return true;
+                case 0: // San Francisco
+                    editor.putInt("buoy_northern_california", 0);
+                    editor.commit();
+                    pagerAdapter.refreshTides();
+                    return true;
+                case 1: // Arena Cove
+                    editor.putInt("buoy_northern_california", 1);
+                    editor.commit();
+                    pagerAdapter.refreshTides();
+                    return true;
+                case 2: // Bolinas
+                    editor.putInt("buoy_northern_california", 2);
+                    editor.commit();
+                    pagerAdapter.refreshTides();
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        } else if (mLocation.equals("Monterey Bay")) {
+            switch (item.getItemId()) {
+                case R.id.refresh:
+                    refreshPicture();
+                    return true;
+                case 0: // Monterey
+                    editor.putInt("buoy_monterey", 0);
+                    editor.commit();
+                    pagerAdapter.refreshTides();
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        } else if (mLocation.equals("Central Coast")) {
+            switch (item.getItemId()) {
+                case R.id.refresh:
+                    refreshPicture();
+                    return true;
+                case 0: // Port San Luis
+                    editor.putInt("buoy_central_coast", 0);
+                    editor.commit();
+                    pagerAdapter.refreshTides();
+                    return true;
+                case 1: // Pt Conception
+                    editor.putInt("buoy_central_coast", 1);
+                    editor.commit();
+                    pagerAdapter.refreshTides();
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        } else if (mLocation.equals("Southern California")) {
+            switch (item.getItemId()) {
+                case R.id.refresh:
+                    refreshPicture();
+                    return true;
+                case 0: // Santa Monica
+                    editor.putInt("buoy_southern_california", 0);
+                    editor.commit();
+                    pagerAdapter.refreshTides();
+                    return true;
+                case 1: // Santa Barbara
+                    editor.putInt("buoy_southern_california", 1);
+                    editor.commit();
+                    pagerAdapter.refreshTides();
+                    return true;
+                case 2: // Long Beach
+                    editor.putInt("buoy_southern_california", 2);
+                    editor.commit();
+                    pagerAdapter.refreshTides();
+                    return true;
+                case 3: // La Jolla
+                    editor.putInt("buoy_southern_california", 3);
+                    editor.commit();
+                    pagerAdapter.refreshTides();
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
         }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void refreshPicture()
     {
-        pagerAdapter = null;
-        pagerAdapter = new LocalPagerAdapter(getSupportFragmentManager(), mLocation);
-        pager.setAdapter(pagerAdapter);
+        pagerAdapter.refreshTides();
+        pagerAdapter.refreshImages();
+    }
+
+    private void inflateMenuOptions(Menu menu) {
+        if (mLocation.equals("Northern California")) {
+            menu.add(0, 0, 2, getString(R.string.san_francisco))
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            menu.add(0, 1, 0, getString(R.string.arena_cove))
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            menu.add(0, 2, 1, getString(R.string.bolinas))
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        } else if (mLocation.equals("Monterey Bay")) {
+            menu.add(0, 0, 0, getString(R.string.monterey_buoy))
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        } else if (mLocation.equals("Central Coast")) {
+            menu.add(0,0, 0, getString(R.string.port_san_luis))
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            menu.add(0,1, 1, getString(R.string.pt_conception))
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        } else if (mLocation.equals("Southern California")) {
+            menu.add(0, 0, 1, getString(R.string.santa_monica))
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            menu.add(0, 1, 0, getString(R.string.santa_barbara))
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            menu.add(0,2, 2, getString(R.string.long_beach))
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            menu.add(0,3, 3, getString(R.string.la_jolla))
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        }
     }
 
     public class LocalPagerAdapter extends FragmentStatePagerAdapter {
@@ -133,6 +249,13 @@ public class SwellMapActivity extends AppCompatActivity {
             }
         }
 
+        public void refreshTides() {
+            localTideFragment.onRefresh();
+        }
+
+        public void refreshImages() {
+            localSwellMapFragment.onRefresh();
+        }
 
         @Override
         public int getCount() {

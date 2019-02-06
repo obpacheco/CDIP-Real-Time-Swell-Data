@@ -7,6 +7,20 @@
     <string name="speed">Speed</string>
     <string name="direction">Direction</string>
     <string name="gusts">Gusts</string>
+    <string name="choose_buoy">Buoy:</string>
+    <string name="buoy_warning">Note: not all information is available from all buoys</string>
+
+    <string name="arena_cove">Arena Cove</string>
+    <string name="bolinas">Bolinas</string>
+    <string name="san_francisco">San Francisco</string>
+    <string name="monterey_buoy">Monterey</string>
+    <string name="port_san_luis">Port San Luis</string>
+    <string name="pt_conception">Pt Conception</string>
+
+    <string name="santa_barbara">Santa Barbara</string>
+    <string name="santa_monica">Santa Monica</string>
+    <string name="long_beach">Long Beach</string>
+    <string name="la_jolla">La Jolla</string>
 
     <string name="northern_california_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/sf.png"</string>
     <string name="monterey_swell_url" translatable="false">"https://cdip.ucsd.edu/recent/model_images/monterey.png"</string>
@@ -22,10 +36,20 @@
     <string name="noaa_endpoint_wind_start" translatable="false">https://tidesandcurrents.noaa.gov/api/datagetter?product=wind&amp;range=1&amp;station=</string>
     <string name="noaa_endpoint_wind_end" translatable="false">&amp;time_zone=lst_ldt&amp;units=english&amp;interval=6&amp;format=json</string>
 
+    <string name="noaa_buoy_arena_cove" translatable="false">9416841</string>
+    <string name="noaa_buoy_bolinas" translatable="false">9414958</string>
     <string name="noaa_buoy_san_francisco" translatable="false">9414290</string>
+
     <string name="noaa_buoy_monterey" translatable="false">9413450</string>
     <string name="noaa_buoy_port_san_luis" translatable="false">9412110</string>
+    <string name="noaa_buoy_pt_conception" translatable="false">9411406</string>
+
     <string name="noaa_buoy_santa_monica" translatable="false">9410840</string>
+    <string name="noaa_buoy_santa_barbara" translatable="false">9411340</string>
+    <string name="noaa_buoy_long_beach" translatable="false">9410660</string>
+    <string name="noaa_buoy_long_beach_wind" translatable="false">9410665</string>
+    <string name="noaa_buoy_la_jolla" translatable="false">9410230</string>
+
 
 
 </resources>

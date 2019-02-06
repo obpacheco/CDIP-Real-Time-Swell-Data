@@ -8,6 +8,13 @@
         <item name="colorAccent">@color/accent_material_dark</item>
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@color/primary_material_light</item>
+        <item name="actionOverflowButtonStyle">@style/DotsLightTheme</item>
+    </style>
+
+    <style name="DotsLightTheme" parent="@style/Widget.AppCompat.ActionButton.Overflow" >
+        <item name="android:tint">@color/colorText</item>
+        <item name="android:colorBackground">@color/popupBackgroundColor</item>
+        <item name="android:itemBackground">@color/popupBackgroundColor</item>
     </style>
 
 </resources>

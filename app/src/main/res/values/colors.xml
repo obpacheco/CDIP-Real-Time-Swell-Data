@@ -7,4 +7,5 @@
     <color name="colorAccent">#39A0ED</color>
     <color name="highlight_trueblack">#414141</color>
     <color name="progress_circle">#A9A9A9</color>
+    <color name="popupBackgroundColor">#505050</color>
 </resources>
