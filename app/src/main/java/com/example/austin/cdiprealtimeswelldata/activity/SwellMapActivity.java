@@ -116,6 +116,9 @@ public class SwellMapActivity extends AppCompatActivity {
                     editor.commit();
                     pagerAdapter.refreshTides();
                     return true;
+                case 10:
+                    goToAbout();
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -128,6 +131,9 @@ public class SwellMapActivity extends AppCompatActivity {
                     editor.putInt("buoy_monterey", 0);
                     editor.commit();
                     pagerAdapter.refreshTides();
+                    return true;
+                case 10:
+                    goToAbout();
                     return true;
                 default:
                     return super.onOptionsItemSelected(item);
@@ -146,6 +152,9 @@ public class SwellMapActivity extends AppCompatActivity {
                     editor.putInt("buoy_central_coast", 1);
                     editor.commit();
                     pagerAdapter.refreshTides();
+                    return true;
+                case 10:
+                    goToAbout();
                     return true;
                 default:
                     return super.onOptionsItemSelected(item);
@@ -175,6 +184,9 @@ public class SwellMapActivity extends AppCompatActivity {
                     editor.commit();
                     pagerAdapter.refreshTides();
                     return true;
+                case 10:
+                    goToAbout();
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -183,8 +195,12 @@ public class SwellMapActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void refreshPicture()
-    {
+    private void goToAbout() {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
+
+    public void refreshPicture() {
         pagerAdapter.refreshTides();
         pagerAdapter.refreshImages();
     }
@@ -215,6 +231,8 @@ public class SwellMapActivity extends AppCompatActivity {
             menu.add(0,3, 3, getString(R.string.la_jolla))
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         }
+        menu.add(0,10,10,"About")
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     public class LocalPagerAdapter extends FragmentStatePagerAdapter {

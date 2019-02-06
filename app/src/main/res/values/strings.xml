@@ -9,6 +9,9 @@
     <string name="gusts">Gusts</string>
     <string name="choose_buoy">Buoy:</string>
     <string name="buoy_warning">Note: not all information is available from all buoys</string>
+    <string name="about_text">This app brings in information and pictures from The Coastal Data Information Program (CDIP) and the National Oceanic and Atmospheric Administration.
+        The data is gathered using the public API provided at https://tidesandcurrents.noaa.gov/api/ and images on CDIP’s nowcast. Transcription errors are possible but hopefully unlikely.
+        \n\nReleased under the GPLv3. See https://github.com/pachecosf/CaliforniaSwellData for source code. Program copyright Austin Wimberley.</string>
 
     <string name="arena_cove">Arena Cove</string>
     <string name="bolinas">Bolinas</string>
@@ -49,7 +52,6 @@
     <string name="noaa_buoy_long_beach" translatable="false">9410660</string>
     <string name="noaa_buoy_long_beach_wind" translatable="false">9410665</string>
     <string name="noaa_buoy_la_jolla" translatable="false">9410230</string>
-
 
 
 </resources>

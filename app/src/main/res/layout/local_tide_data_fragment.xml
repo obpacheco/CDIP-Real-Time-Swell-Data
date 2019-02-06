@@ -299,7 +299,7 @@
                 android:background="@color/colorPrimaryLight"
                 android:textColor="@color/colorText"
                 android:gravity="left"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:text="@string/buoy_warning"/>
 
         </LinearLayout>
